@@ -1,4 +1,4 @@
-export interface Movie {
+export interface IMovie {
   id: number;
   name: string;
   image: string;
@@ -9,4 +9,5 @@ export interface Movie {
   overview: string;
   release_date: string;
   title: string;
+  vote_count: number;
 }

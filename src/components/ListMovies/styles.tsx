@@ -16,9 +16,8 @@ export const TitleMovie = styled.Text`
   bottom: 0;
   width: 300px;
   text-align: center;
-  padding: 10px;
+  padding: 20px;
   color: #fff;
   font-size: 20px;
-  background-color: black;
-  opacity: 0.7;
+  background-color: rgba(0, 0, 0, 0.7);
 `;

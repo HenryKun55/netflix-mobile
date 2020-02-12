@@ -1,23 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState, useRef} from 'react';
 import {FlatList, ScrollView} from 'react-native';
-import {TouchableHighlight} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
 import Loading from '../Loading';
 import {Container, ContainerMovie, TitleMovie} from './styles';
 import api from '../../services/api';
-import {Movie} from '../../types/Movies';
+import {IMovie} from '../../types/IMovie';
 import {API_KEY_TMDB, LANG, URI_IMAGE} from 'react-native-dotenv';
 import {sizes} from '../../config/sizes';
 import Item from './Item';
 
 const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
   const ref = useRef<any>(null);
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<IMovie[]>([]);
   const [page, setPage] = useState(1);
-
-  const navigate = useNavigation();
 
   async function getMovies(
     pageNumber = page,
@@ -33,7 +28,10 @@ const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
     });
     setMovies(
       !refresh
-        ? (prevstate: Movie[]) => [...prevstate, ...responseMovies.data.results]
+        ? (prevstate: IMovie[]) => [
+            ...prevstate,
+            ...responseMovies.data.results,
+          ]
         : [...responseMovies.data.results],
     );
     setPage(page + 1);
@@ -59,7 +57,7 @@ const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
             item={movies[0]}
             uriImage={URI_IMAGE + sizes.poster_sizes.w500}
             width={300}
-            height={500}
+            height={450}
           />
           <TitleMovie>{movies[0].title}</TitleMovie>
         </ContainerMovie>
