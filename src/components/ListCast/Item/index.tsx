@@ -1,31 +1,25 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {TouchableHighlight} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
-import {IMovie} from '../../../types/IMovie';
+import {Cast} from 'src/types/Cast';
+import {Container, Name} from './styles';
 import {images} from '../../../assets';
 
 const Item = ({
   item,
   uriImage,
-  width = 150,
-  height = 200,
-  backdrop = false,
+  width = 100,
+  height = 100,
   borderRadius = 0,
 }: {
-  item: IMovie;
+  item: Cast;
   uriImage: string;
   width?: number | string;
   height?: number | string;
-  backdrop?: boolean;
   borderRadius?: number;
 }) => {
-  const navigate = useNavigation();
-  const image = !backdrop ? item.poster_path : item.backdrop_path;
-
   return (
-    <TouchableHighlight onPress={() => navigate.navigate('Movie', {item})}>
+    <Container>
       <FastImage
         key={item.id}
         style={{
@@ -34,12 +28,15 @@ const Item = ({
           borderRadius,
         }}
         source={{
-          uri: image ? uriImage.concat(image) : images.noPhoto,
+          uri: item.profile_path
+            ? uriImage.concat(item.profile_path)
+            : images.noPhoto,
           priority: FastImage.priority.low,
         }}
-        resizeMode={FastImage.resizeMode.contain}
+        resizeMode={FastImage.resizeMode.cover}
       />
-    </TouchableHighlight>
+      <Name>{item.name}</Name>
+    </Container>
   );
 };
 

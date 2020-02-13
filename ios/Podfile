@@ -34,11 +34,11 @@ target 'mobile' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+	use_native_modules!
+  pod 'RNShineButton', :path => '../node_modules/react-native-shine-button/ios'
 
-  pod 'react-native-video', :path => '../node_modules/react-native-video'
-
-
-
+  use_frameworks!
+  pod 'WCLShineButton',:git => 'https://github.com/prscX/WCLShineButton.git', :branch =>'master'
 
 
 

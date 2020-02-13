@@ -1,13 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState, useRef} from 'react';
+import {API_KEY_TMDB, LANG, URI_IMAGE} from 'react-native-dotenv';
+import {Container, ContainerMovie, TitleMovie} from './styles';
 import {FlatList, ScrollView} from 'react-native';
 import Loading from '../Loading';
-import {Container, ContainerMovie, TitleMovie} from './styles';
 import api from '../../services/api';
 import {IMovie} from '../../types/IMovie';
-import {API_KEY_TMDB, LANG, URI_IMAGE} from 'react-native-dotenv';
 import {sizes} from '../../config/sizes';
 import Item from './Item';
+import Separator from './Separator';
+import {AirbnbRating} from 'react-native-ratings';
 
 const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
   const ref = useRef<any>(null);
@@ -58,6 +60,7 @@ const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
             uriImage={URI_IMAGE + sizes.poster_sizes.w500}
             width={300}
             height={450}
+            borderRadius={30}
           />
           <TitleMovie>{movies[0].title}</TitleMovie>
         </ContainerMovie>
@@ -72,10 +75,15 @@ const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
           keyExtractor={movie => String(movie.id)}
           onEndReached={() => getMovies()}
           onEndReachedThreshold={0.1}
+          ItemSeparatorComponent={() => <Separator />}
           ListFooterComponent={<Loading />}
           showsHorizontalScrollIndicator={false}
           renderItem={({item}) => (
-            <Item item={item} uriImage={URI_IMAGE + sizes.poster_sizes.w185} />
+            <Item
+              item={item}
+              uriImage={URI_IMAGE + sizes.poster_sizes.w185}
+              borderRadius={12}
+            />
           )}
           extraData={genre}
         />
