@@ -9,7 +9,7 @@ import {images} from '../../../assets';
 const Item = ({
   item,
   uriImage,
-  width = 150,
+  width = 120,
   height = 200,
   backdrop = false,
   borderRadius = 0,
@@ -32,6 +32,7 @@ const Item = ({
           width,
           height,
           borderRadius,
+          margin: 4,
         }}
         source={{
           uri: image ? uriImage.concat(image) : images.noPhoto,

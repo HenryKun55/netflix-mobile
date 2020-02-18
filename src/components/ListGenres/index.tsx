@@ -1,35 +1,45 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity, Text} from 'react-native';
 import {Container, ContainerTitle, Title} from './styles';
-
-import api from '../../services/api';
-
-import {API_KEY_TMDB, LANG} from 'react-native-dotenv';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import {Genre} from '../../types/Genre';
+import {discoverGenres} from '../../services/movie';
+import {ApplicationState} from '../../store';
+import * as AuthActions from '../../store/ducks/auth/actions';
+import {IUser} from '../../types/IUser';
 
 interface GenreProps {
   setGenre(genre: Genre): void;
 }
 
-const ListGenres: React.FC<GenreProps> = ({setGenre}) => {
+interface StateProps {
+  auth: IUser;
+}
+
+interface DispatchProps {
+  loginRequest(email: string, password: string): void;
+}
+
+type Props = StateProps & DispatchProps & GenreProps;
+
+const ListGenres: React.FC<Props> = ({setGenre, loginRequest}) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [selected, setSelected] = useState(28);
 
   async function getLists(): Promise<boolean> {
-    const response = await api.get('genre/movie/list', {
-      params: {
-        api_key: API_KEY_TMDB,
-        language: LANG,
-      },
-    });
-    setGenres(response.data.genres);
+    const data = await discoverGenres();
+    setGenres(data.genres);
 
     return true;
   }
 
   useEffect(() => {
+    const email = 'henrique2@email.com';
+    const password = 'flavio92416124';
+    loginRequest({email, password});
     getLists();
-  }, []);
+  }, [loginRequest]);
 
   const handleSelected = (item: Genre) => {
     setSelected(item.id);
@@ -62,4 +72,14 @@ const ListGenres: React.FC<GenreProps> = ({setGenre}) => {
   );
 };
 
-export default ListGenres;
+const mapStateToProps = ({auth}: ApplicationState) => ({
+  auth: auth.data,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(AuthActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ListGenres);

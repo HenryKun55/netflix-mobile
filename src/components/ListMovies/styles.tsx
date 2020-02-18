@@ -15,7 +15,8 @@ export const CustomTitle = styled.Text``;
 
 export const TitleMovie = styled.Text`
   position: absolute;
-  bottom: 0;
+  bottom: 4px;
+  left: 4px;
   width: 300px;
   text-align: center;
   padding: 20px;

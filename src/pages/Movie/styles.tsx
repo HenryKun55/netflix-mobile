@@ -1,12 +1,13 @@
 import styled from 'styled-components/native';
 import SafeAreaView from 'react-native-safe-area-view';
+import {width} from '../../config/window';
 
 export const Container = styled(SafeAreaView)`
   background-color: #211102;
   flex: 1;
 `;
 
-export const OverView = styled.View`
+export const OverView = styled.ScrollView`
   padding: 0 20px;
   flex: 1;
 `;
@@ -14,6 +15,7 @@ export const OverView = styled.View`
 export const Title = styled.Text`
   padding: 10px 0;
   color: #fff;
+  width: ${Math.floor(width / 1.4)}px;
   font-size: 25px;
   font-weight: bold;
 `;
@@ -45,6 +47,6 @@ export const ContainerCast = styled.View`
 
 export const ContainerHeader = styled.View`
   position: absolute;
-  right: 20px;
+  right: 10px;
   top: 20px;
 `;

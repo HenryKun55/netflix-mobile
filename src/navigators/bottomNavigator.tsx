@@ -23,6 +23,7 @@ const BottomNavigator: React.FC = () => {
         options={{
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
+          gestureEnabled: true,
         }}
       />
     </Stack.Navigator>
