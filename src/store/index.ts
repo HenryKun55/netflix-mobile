@@ -2,6 +2,8 @@ import createSagaMiddleware from 'redux-saga';
 import {createStore, applyMiddleware, Store} from 'redux';
 
 import {AuthState} from '../store/ducks/auth/types';
+import {GenreState} from '../store/ducks/genre/types';
+import {MovieState} from '../store/ducks/movie/types';
 
 import reducers from './ducks';
 import rootSaga from './ducks/rootSaga';
@@ -17,6 +19,8 @@ sagaMiddleware.run(rootSaga);
 
 export interface ApplicationState {
   auth: AuthState;
+  genre: GenreState;
+  movie: MovieState;
 }
 
 export default store;

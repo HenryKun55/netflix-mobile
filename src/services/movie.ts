@@ -1,7 +1,9 @@
 import api from './api';
 import {API_KEY_TMDB, LANG} from 'react-native-dotenv';
 
-export const discoverMovies = async (genre: number, pageNumber: number) => {
+export const discoverMovies = async (payload: any) => {
+  // console.log(payload);
+  const {genre, pageNumber} = payload;
   try {
     const {data} = await api.get('discover/movie', {
       params: {

@@ -1,45 +1,35 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, TouchableOpacity, Text} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {Container, ContainerTitle, Title} from './styles';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {Genre} from '../../types/Genre';
-import {discoverGenres} from '../../services/movie';
 import {ApplicationState} from '../../store';
-import * as AuthActions from '../../store/ducks/auth/actions';
-import {IUser} from '../../types/IUser';
+import * as GenreActions from '../../store/ducks/genre/actions';
 
 interface GenreProps {
   setGenre(genre: Genre): void;
 }
 
 interface StateProps {
-  auth: IUser;
+  genres: Genre[];
 }
 
 interface DispatchProps {
-  loginRequest(email: string, password: string): void;
+  genreRequest(): void;
 }
 
 type Props = StateProps & DispatchProps & GenreProps;
 
-const ListGenres: React.FC<Props> = ({setGenre, loginRequest}) => {
-  const [genres, setGenres] = useState<Genre[]>([]);
+const ListGenres: React.FC<Props> = ({setGenre, genreRequest, genres}) => {
   const [selected, setSelected] = useState(28);
 
-  async function getLists(): Promise<boolean> {
-    const data = await discoverGenres();
-    setGenres(data.genres);
-
-    return true;
-  }
-
   useEffect(() => {
-    const email = 'henrique2@email.com';
-    const password = 'flavio92416124';
-    loginRequest({email, password});
-    getLists();
-  }, [loginRequest]);
+    if (genres.length === 0) {
+      genreRequest();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   const handleSelected = (item: Genre) => {
     setSelected(item.id);
@@ -72,12 +62,12 @@ const ListGenres: React.FC<Props> = ({setGenre, loginRequest}) => {
   );
 };
 
-const mapStateToProps = ({auth}: ApplicationState) => ({
-  auth: auth.data,
+const mapStateToProps = ({genre}: ApplicationState) => ({
+  genres: genre.data,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(AuthActions, dispatch);
+  bindActionCreators(GenreActions, dispatch);
 
 export default connect(
   mapStateToProps,

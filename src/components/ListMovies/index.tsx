@@ -1,47 +1,51 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState, useRef} from 'react';
-import {URI_IMAGE} from 'react-native-dotenv';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import {Container, ContainerMovie, TitleMovie} from './styles';
 import {FlatList, ScrollView} from 'react-native';
 import Loading from '../Loading';
-import {discoverMovies} from '../../services/movie';
 import {IMovie} from '../../types/IMovie';
 import {sizes} from '../../config/sizes';
 import Item from './Item';
 import Separator from './Separator';
+import {ApplicationState} from '../../store';
+import {URI_IMAGE} from 'react-native-dotenv';
+import * as MovieActions from '../../store/ducks/movie/actions';
 
-const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
+interface StateProps {
+  movies: IMovie[];
+  selectedGenre: number;
+}
+
+interface DispatchProps {
+  setMoviesRequest(genre: number, pageNumber: number): void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const ListMovies: React.FC<Props> = ({
+  selectedGenre,
+  movies,
+  setMoviesRequest,
+}) => {
   const ref = useRef<any>(null);
-  const [movies, setMovies] = useState<IMovie[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  async function getMovies(
-    pageNumber = page,
-    refresh = false,
-  ): Promise<boolean> {
-    const data = await discoverMovies(genre, pageNumber);
-    setMovies(
-      !refresh
-        ? (prevstate: IMovie[]) => [...prevstate, ...data.results]
-        : [...data.results],
-    );
+  function getMovies() {
+    setMoviesRequest(selectedGenre, pageNumber);
     setPage(page + 1);
     setLoading(false);
-    return true;
   }
-
-  useEffect(() => {
-    getMovies();
-  }, []);
 
   useEffect(() => {
     if (ref.current) {
       ref.current!.scrollToOffset({animated: true, offset: 0});
     }
     setLoading(true);
-    getMovies(1, true);
-  }, [genre]);
+    getMovies();
+  }, [selectedGenre]);
 
   return (
     <Container>
@@ -77,7 +81,7 @@ const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
                   borderRadius={12}
                 />
               )}
-              extraData={genre}
+              extraData={selectedGenre}
             />
           </ScrollView>
         </>
@@ -88,4 +92,15 @@ const ListMovies: React.FC<{genre: number}> = ({genre = 28}) => {
   );
 };
 
-export default ListMovies;
+const mapStateToProps = ({genre, movie}: ApplicationState) => ({
+  selectedGenre: genre.selected,
+  movies: movie.data,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(MovieActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ListMovies);
