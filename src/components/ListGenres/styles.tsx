@@ -11,7 +11,7 @@ export const Title = styled.Text`
   font-weight: bold;
   font-size: 22px;
   padding-bottom: 10px;
-  ${({selected}) =>
+  ${({selected}: {selected: any}) =>
     selected &&
     css`
       border-bottom-width: 2px;
