@@ -1,6 +1,8 @@
 export interface IUser {
-  id?: string;
+  _id?: string;
   name?: string;
-  password?: string;
   email?: string;
+  token?: string;
 }
+
+export type UserProps = IUser;

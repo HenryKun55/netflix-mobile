@@ -1,8 +1,8 @@
-import {all, takeLatest, takeLeading} from 'redux-saga/effects';
+import {all, takeLatest, takeLeading, takeEvery} from 'redux-saga/effects';
 
 //  Auth
 import {AuthTypes} from '../ducks/auth/types';
-import {login} from '../ducks/auth/sagas';
+import {authUser, getUser, removeUser} from '../ducks/auth/sagas';
 
 //  Genre
 import {GenreTypes} from '../ducks/genre/types';
@@ -10,7 +10,7 @@ import {getGenres, setGenre} from '../ducks/genre/sagas';
 
 //Movie
 import {MovieTypes} from '../ducks/movie/types';
-import {setMovies} from '../ducks/movie/sagas';
+import {setMovies, setLikeMovie, getLikeMovie} from '../ducks/movie/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +20,12 @@ export default function* rootSaga() {
 
     //Movie
     takeLeading(MovieTypes.SET_MOVIES_REQUEST, setMovies),
+    takeLeading(MovieTypes.LIKE_MOVIE_REQUEST, setLikeMovie),
+    takeLeading(MovieTypes.GET_MOVIE_REQUEST, getLikeMovie),
+
+    //Auth
+    takeLatest(AuthTypes.AUTH_REQUEST, authUser),
+    takeEvery(AuthTypes.GET_AUTH, getUser),
+    takeLatest(AuthTypes.REMOVE_AUTH, removeUser),
   ]);
 }

@@ -1,8 +1,7 @@
-import api from './api';
+import api, {apiLocal} from './api';
 import {API_KEY_TMDB, LANG} from 'react-native-dotenv';
 
 export const discoverMovies = async (payload: any) => {
-  // console.log(payload);
   const {genre, pageNumber} = payload;
   try {
     const {data} = await api.get('discover/movie', {
@@ -27,6 +26,34 @@ export const discoverGenres = async () => {
         language: LANG,
       },
     });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMovie = async (payload: any) => {
+  const {movieId, token} = payload;
+  try {
+    const {data} = await apiLocal.get(`movie/${movieId}`, {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const likeMovie = async (payload: any) => {
+  const {movieId, token} = payload;
+  try {
+    const {data} = await apiLocal.post(
+      'movie',
+      {movieId},
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      },
+    );
     return data;
   } catch (error) {
     throw error;

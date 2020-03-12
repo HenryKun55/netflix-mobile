@@ -1,4 +1,6 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import {AirbnbRating} from 'react-native-ratings';
 import {URI_IMAGE} from 'react-native-dotenv';
 import {
@@ -15,22 +17,62 @@ import {useRoute} from '@react-navigation/native';
 import Item from '../../components/ListMovies/Item';
 import {IMovie} from '../../types/IMovie';
 import {sizes} from '../../config/sizes';
-import {width} from '../../config/window';
+import {width} from '../../config';
 import ListCast from '../../components/ListCast';
 import LottieView from 'lottie-react-native';
 import {images} from '../../assets';
 import {TouchableOpacity, Animated} from 'react-native';
 
-const Movie: React.FC<IMovie> = () => {
+import {ApplicationState} from '../../store';
+import * as MovieActions from '../../store/ducks/movie/actions';
+import { IUser } from '../../types/IUser';
+
+interface StateProps {
+  movies: IMovie[];
+  userId: IUser;
+}
+
+interface DispatchProps {
+  likeMovieRequest(movieId: number): void;
+  getMovieLikeRequest(movieId: number): void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeRequest}) => {
   const {item}: {item: IMovie} = useRoute().params;
-  const [progress, setProgress] = useState(new Animated.Value(0));
+  const [progress] = useState(new Animated.Value(0));
   const animation = useRef(null);
 
-  const handleHeart = () => {
+  useEffect(() => {
+    getMovieLikeRequest(item.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getMovieLike();
+    animateHeart();
+  }, [movies])
+
+  const getMovieLike = () => {
+    movies.map(m => {
+      if (m.id === item.id) {
+        item.users = m.users;
+      }
+    });
+  };
+
+  const animateHeart = async () => {
+    const like = item.users?.includes(userId);
     Animated.timing(progress, {
-      toValue: 15,
+      toValue: like ? 0 : 15,
       duration: 10000,
     }).start();
+    progress.setValue(like ? 15 : 0);
+  };
+
+  const handleHeart = () => {
+    likeMovieRequest(item.id);
   };
 
   return (
@@ -76,4 +118,15 @@ const Movie: React.FC<IMovie> = () => {
   );
 };
 
-export default Movie;
+const mapStateToProps = ({movie, auth}: ApplicationState) => ({
+  movies: movie.data,
+  userId: auth.data._id,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(MovieActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Movie);

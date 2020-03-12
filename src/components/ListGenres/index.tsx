@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
-import {Container, ContainerTitle, Title} from './styles';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
+import {FlatList, TouchableOpacity} from 'react-native';
+import {Container, ContainerTitle, Title} from './styles';
 import {Genre} from '../../types/Genre';
 import {ApplicationState} from '../../store';
 import * as GenreActions from '../../store/ducks/genre/actions';

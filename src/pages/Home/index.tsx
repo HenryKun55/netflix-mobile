@@ -4,12 +4,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import ListGenres from '../../components/ListGenres';
 import ListMovies from '../../components/ListMovies';
-import {ApplicationState} from '../../store';
 import * as GenreActions from '../../store/ducks/genre/actions';
 
 import {Container} from './styles';
 
-import {Genre} from 'src/types/Genre';
+import {Genre} from '../../types/Genre';
 
 interface StateProps {
   selected: number;

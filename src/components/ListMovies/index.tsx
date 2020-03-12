@@ -34,7 +34,7 @@ const ListMovies: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
 
   function getMovies() {
-    setMoviesRequest(selectedGenre, pageNumber);
+    setMoviesRequest(selectedGenre, 1);
     setPage(page + 1);
     setLoading(false);
   }

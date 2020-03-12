@@ -1,20 +1,51 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import StatusBar from '@react-native-community/status-bar';
 
-import BottomNavigator from './bottomNavigator';
+import * as AuthActions from '../store/ducks/auth/actions';
+import {ApplicationState} from '../store';
 
-const Navigator: React.FC = () => {
+import {AppStack, AuthStack} from './navigators';
+import {IUser} from '../types/IUser';
+
+interface StateProps {
+  user: IUser;
+}
+
+interface DispatchProps {
+  getAuth(): void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const Navigator: React.FC<Props> = ({user, getAuth}) => {
   StatusBar.setBackgroundColor('#211102', true);
+
+  useEffect(() => {
+    getAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <BottomNavigator />
+        {!user.token ? <AuthStack /> : <AppStack />}
       </NavigationContainer>
     </SafeAreaProvider>
   );
 };
 
-export default Navigator;
+const mapStateToProps = ({auth}: ApplicationState) => ({
+  user: auth.data,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(AuthActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Navigator);

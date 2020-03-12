@@ -5,13 +5,13 @@ import {IUser} from '../../../types/IUser';
  */
 
 export interface AuthState {
-  token: Promise<string | null>;
-  readonly data: IUser;
-  readonly loading: boolean;
-  readonly error: boolean;
+  data: IUser;
 }
 
 export enum AuthTypes {
-  LOGIN_REQUEST = 'auth/LOGIN_REQUEST',
-  LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS',
+  AUTH_REQUEST = 'auth/AUTH_REQUEST',
+  AUTH_SUCCESS = 'auth/AUTH_SUCCESS',
+  TOKEN_SUCCESS = 'auth/TOKEN_SUCCESS',
+  REMOVE_AUTH = 'auth/REMOVE_AUTH',
+  GET_AUTH = 'auth/GET_AUTH',
 }

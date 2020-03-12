@@ -1,16 +1,8 @@
 import {Reducer} from 'redux';
-import {AsyncStorage} from 'react-native';
 import {AuthState, AuthTypes} from './types';
 
 const INITIAL_STATE: AuthState = {
-  token: AsyncStorage.getItem('token'),
-  data: {
-    id: '',
-    name: '',
-    email: '',
-  },
-  loading: false,
-  error: false,
+  data: {},
 };
 
 /**
@@ -18,10 +10,27 @@ const INITIAL_STATE: AuthState = {
  */
 const auth: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case AuthTypes.LOGIN_REQUEST:
-      return {...state, loading: true};
-    case AuthTypes.LOGIN_SUCCESS:
-      return {...state, loading: false, data: action.payload.data};
+    case AuthTypes.AUTH_REQUEST:
+      return {...state};
+    case AuthTypes.AUTH_SUCCESS:
+      const obj = {
+        ...state.data,
+        ...action.payload.user,
+        token: action.payload.token,
+      };
+      console.log(obj);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          ...action.payload.user,
+          token: action.payload.token,
+        },
+      };
+    case AuthTypes.TOKEN_SUCCESS:
+      return {...state, data: {...state.data, token: action.payload}};
+    case AuthTypes.REMOVE_AUTH:
+      return {...state, data: {}};
     default:
       return state;
   }

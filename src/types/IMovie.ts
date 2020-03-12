@@ -10,4 +10,5 @@ export interface IMovie {
   release_date: string;
   title: string;
   vote_count: number;
+  users?: string[];
 }
