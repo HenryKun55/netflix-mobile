@@ -10,8 +10,9 @@ import {sizes} from '../../config/sizes';
 import Item from './Item';
 import Separator from './Separator';
 import {ApplicationState} from '../../store';
-import {URI_IMAGE} from 'react-native-dotenv';
+import Config from 'react-native-config';
 import * as MovieActions from '../../store/ducks/movie/actions';
+import {colors} from '../../styles';
 
 interface StateProps {
   movies: IMovie[];
@@ -54,7 +55,7 @@ const ListMovies: React.FC<Props> = ({
           <ContainerMovie>
             <Item
               item={movies[0]}
-              uriImage={URI_IMAGE + sizes.poster_sizes.w500}
+              uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
               width={300}
               height={450}
               borderRadius={30}
@@ -77,7 +78,7 @@ const ListMovies: React.FC<Props> = ({
               renderItem={({item}) => (
                 <Item
                   item={item}
-                  uriImage={URI_IMAGE + sizes.poster_sizes.w185}
+                  uriImage={Config.URI_IMAGE + sizes.poster_sizes.w185}
                   borderRadius={12}
                 />
               )}

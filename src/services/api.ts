@@ -1,12 +1,12 @@
 import axios from 'axios';
-import {API_LOCAL} from 'react-native-dotenv';
+import Config from 'react-native-config';
 
 const api = axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
 });
 
 export const apiLocal = axios.create({
-  baseURL: API_LOCAL,
+  baseURL: Config.API_LOCAL,
 });
 
 export default api;

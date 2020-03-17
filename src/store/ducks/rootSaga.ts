@@ -2,7 +2,7 @@ import {all, takeLatest, takeLeading, takeEvery} from 'redux-saga/effects';
 
 //  Auth
 import {AuthTypes} from '../ducks/auth/types';
-import {authUser, getUser, removeUser} from '../ducks/auth/sagas';
+import {authUser, storeUser, getUser, removeUser} from '../ducks/auth/sagas';
 
 //  Genre
 import {GenreTypes} from '../ducks/genre/types';
@@ -25,6 +25,7 @@ export default function* rootSaga() {
 
     //Auth
     takeLatest(AuthTypes.AUTH_REQUEST, authUser),
+    takeLatest(AuthTypes.STORE_REQUEST, storeUser),
     takeEvery(AuthTypes.GET_AUTH, getUser),
     takeLatest(AuthTypes.REMOVE_AUTH, removeUser),
   ]);

@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {AirbnbRating} from 'react-native-ratings';
-import {URI_IMAGE} from 'react-native-dotenv';
+import Config from 'react-native-config';
 import {
   Container,
   ContainerHeader,
@@ -51,24 +51,24 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
 
   useEffect(() => {
     getMovieLike();
-    animateHeart();
   }, [movies])
 
   const getMovieLike = () => {
     movies.map(m => {
       if (m.id === item.id) {
         item.users = m.users;
+        animateHeart();
       }
     });
   };
 
   const animateHeart = async () => {
     const like = item.users?.includes(userId);
-    Animated.timing(progress, {
-      toValue: like ? 0 : 15,
-      duration: 10000,
-    }).start();
     progress.setValue(like ? 15 : 0);
+    Animated.timing(progress, {
+      toValue: like ? 15 : 0,
+      duration: 10000
+    }).start();
   };
 
   const handleHeart = () => {
@@ -79,7 +79,7 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
     <Container>
       <Item
         item={item}
-        uriImage={URI_IMAGE + sizes.poster_sizes.w500}
+        uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
         width={width}
         height={230}
         backdrop

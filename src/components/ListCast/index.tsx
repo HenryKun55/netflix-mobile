@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
-import {API_KEY_TMDB, LANG, URI_IMAGE} from 'react-native-dotenv';
+import Config from 'react-native-config';
 
 import api from '../../services/api';
 import {Cast} from 'src/types/Cast';
@@ -16,8 +16,8 @@ const ListCast: React.FC<{id: number}> = ({id}) => {
   async function getCasts(): Promise<boolean> {
     const response = await api.get(`movie/${id}`, {
       params: {
-        api_key: API_KEY_TMDB,
-        language: LANG,
+        api_key: Config.API_KEY_TMDB,
+        language: Config.LANG,
         append_to_response: append.credits,
       },
     });
@@ -43,7 +43,7 @@ const ListCast: React.FC<{id: number}> = ({id}) => {
       renderItem={({item}) => (
         <Item
           item={item}
-          uriImage={URI_IMAGE + sizes.poster_sizes.w185}
+          uriImage={Config.URI_IMAGE + sizes.poster_sizes.w185}
           borderRadius={100}
         />
       )}

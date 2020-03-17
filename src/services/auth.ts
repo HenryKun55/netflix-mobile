@@ -3,7 +3,7 @@ import {IUser} from '../types/IUser';
 
 export const store = async (user: IUser) => {
   try {
-    const {data} = await apiLocal.post('/login', user);
+    const {data} = await apiLocal.post('/user', user);
     return data;
   } catch (error) {
     throw error;

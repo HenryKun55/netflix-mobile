@@ -1,13 +1,13 @@
 import api, {apiLocal} from './api';
-import {API_KEY_TMDB, LANG} from 'react-native-dotenv';
+import Config from 'react-native-config';
 
 export const discoverMovies = async (payload: any) => {
   const {genre, pageNumber} = payload;
   try {
     const {data} = await api.get('discover/movie', {
       params: {
-        api_key: API_KEY_TMDB,
-        language: LANG,
+        api_key: Config.API_KEY_TMDB,
+        language: Config.LANG,
         with_genres: genre,
         page: pageNumber,
       },
@@ -22,8 +22,8 @@ export const discoverGenres = async () => {
   try {
     const {data} = await api.get('genre/movie/list', {
       params: {
-        api_key: API_KEY_TMDB,
-        language: LANG,
+        api_key: Config.API_KEY_TMDB,
+        language: Config.LANG,
       },
     });
     return data;
