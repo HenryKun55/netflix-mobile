@@ -4,6 +4,7 @@ import {
   setMoviesRequest,
   setMoviesSuccess,
   likeMovieSuccess,
+  setPageSuccess,
   clearMovies,
 } from './actions';
 
@@ -12,7 +13,6 @@ import {getStorage} from '../../../util';
 export function* setMovies(payload: any) {
   const {genre, pageNumber} = payload.payload;
   try {
-    yield put(clearMovies());
     yield call(setMoviesRequest, genre, pageNumber);
     const data = yield call(discoverMovies, {genre, pageNumber});
     yield put(setMoviesSuccess(data.results));
@@ -41,6 +41,17 @@ export function* setLikeMovie(payload: any) {
     const data = yield call(likeMovie, {token, movieId: payload.payload});
     const {movieId, users} = data;
     yield put(likeMovieSuccess({movieId, users}));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* setPageNumber(payload: any) {
+  try {
+    if (payload.payload === 1) {
+      yield put(clearMovies());
+    }
+    yield put(setPageSuccess(payload.payload));
   } catch (error) {
     console.log(error);
   }

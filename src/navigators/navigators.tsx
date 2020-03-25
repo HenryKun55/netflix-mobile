@@ -1,9 +1,14 @@
 import React from 'react';
-import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  TransitionPresets,
+  HeaderBackButton,
+} from '@react-navigation/stack';
 
 import Home from '../pages/Home';
 import Movie from '../pages/Movie';
 import Login from '../pages/Login';
+import User from '../pages/User';
 
 const Auth = createStackNavigator();
 const App = createStackNavigator();
@@ -37,7 +42,24 @@ const AppStack: React.FC = () => (
       name="Movie"
       component={Movie}
       options={{
-        headerShown: false,
+        // headerShown: false,
+        headerTransparent: true,
+        title: '',
+        headerStyle: {
+          backgroundColor: 'red',
+        },
+        headerTintColor: 'white',
+        ...TransitionPresets.SlideFromRightIOS,
+        gestureEnabled: true,
+      }}
+    />
+    <App.Screen
+      name="User"
+      component={User}
+      options={{
+        headerTransparent: true,
+        title: '',
+        headerTintColor: 'white',
         ...TransitionPresets.SlideFromRightIOS,
         gestureEnabled: true,
       }}

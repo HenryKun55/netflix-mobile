@@ -5,6 +5,7 @@ import {AirbnbRating} from 'react-native-ratings';
 import Config from 'react-native-config';
 import {
   Container,
+  ContainerMovie,
   ContainerHeader,
   ContainerRating,
   ContainerCast,
@@ -12,6 +13,7 @@ import {
   Title,
   CustomTitle,
   Desctiption,
+  Opacity,
 } from './styles';
 import {useRoute} from '@react-navigation/native';
 import Item from '../../components/ListMovies/Item';
@@ -22,10 +24,13 @@ import ListCast from '../../components/ListCast';
 import LottieView from 'lottie-react-native';
 import {images} from '../../assets';
 import {TouchableOpacity, Animated} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {ApplicationState} from '../../store';
 import * as MovieActions from '../../store/ducks/movie/actions';
 import { IUser } from '../../types/IUser';
+import { colors } from '../../styles';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 interface StateProps {
   movies: IMovie[];
@@ -67,7 +72,7 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
     progress.setValue(like ? 15 : 0);
     Animated.timing(progress, {
       toValue: like ? 15 : 0,
-      duration: 10000
+      duration: 10000,
     }).start();
   };
 
@@ -77,15 +82,20 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
 
   return (
     <Container>
-      <Item
-        item={item}
-        uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
-        width={width}
-        height={230}
-        backdrop
-      />
+      <Opacity />
+      <ContainerMovie>
+        <Item
+          item={item}
+          uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
+          width={width}
+          height={232}
+          backdrop
+        />
+        <LinearGradient colors={colors.gradientTitle} style={{ position: "relative", bottom: RFPercentage( item.title.length > 36 ? 9 : 6)}}>
+          <Title>{item.title}</Title>
+        </LinearGradient>
+      </ContainerMovie>
       <OverView>
-        <Title>{item.title}</Title>
         <ContainerHeader>
           <TouchableOpacity onPress={handleHeart}>
             <LottieView
@@ -94,7 +104,6 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
               source={images.animation.heart}
               progress={progress}
             />
-            <CustomTitle />
           </TouchableOpacity>
         </ContainerHeader>
         <ContainerRating>
@@ -111,7 +120,7 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
         <Desctiption>{item.overview}</Desctiption>
         <CustomTitle>Cast</CustomTitle>
         <ContainerCast>
-          <ListCast id={item.id} />
+          <ListCast movieId={item.id} />
         </ContainerCast>
       </OverView>
     </Container>

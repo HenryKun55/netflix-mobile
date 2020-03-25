@@ -1,3 +1,3 @@
-import width from './window';
+import {width, height} from './window';
 
-export {width};
+export {width, height};

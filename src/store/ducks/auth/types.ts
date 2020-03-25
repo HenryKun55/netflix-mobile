@@ -19,4 +19,6 @@ export enum AuthTypes {
   GET_AUTH = 'auth/GET_AUTH',
   CHANGE_STATE = 'auth/CHANGE_STATE',
   CANCEL_LOADING = 'auth/CANCEL_LOADING',
+  IMAGE_REQUEST = 'auth/IMAGE_REQUEST',
+  IMAGE_SUCCESS = 'auth/IMAGE_SUCCESS',
 }

@@ -10,6 +10,7 @@ import {ApplicationState} from '../store';
 
 import {AppStack, AuthStack} from './navigators';
 import {IUser} from '../types/IUser';
+import {colors} from '../styles';
 
 interface StateProps {
   user: IUser;
@@ -22,7 +23,7 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 const Navigator: React.FC<Props> = ({user, getAuth}) => {
-  StatusBar.setBackgroundColor('#211102', true);
+  StatusBar.setBackgroundColor(colors.background, true);
 
   useEffect(() => {
     getAuth();

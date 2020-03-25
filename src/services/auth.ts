@@ -18,3 +18,27 @@ export const login = async (user: IUser) => {
     throw error;
   }
 };
+
+export const image = async (payload: any) => {
+  const {
+    file: {uri, fileName, type},
+    token,
+  } = payload;
+  const file = new FormData();
+  file.append('file', {
+    uri,
+    name: fileName,
+    type,
+  });
+  try {
+    const {data} = await apiLocal.post('/user/photo', file, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};

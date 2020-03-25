@@ -1,6 +1,10 @@
 import React from 'react';
-import {LoadingComponent} from './styles';
+import {Container, LoadingComponent} from './styles';
 
-const Loading: React.FC = () => <LoadingComponent />;
+const Loading: React.FC<{loading?: boolean}> = ({loading}) => (
+  <Container loading={loading}>
+    <LoadingComponent />
+  </Container>
+);
 
 export default Loading;

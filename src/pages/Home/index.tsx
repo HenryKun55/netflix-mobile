@@ -2,6 +2,7 @@ import React from 'react';
 import {ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
+import Header from '../../components/Header';
 import ListGenres from '../../components/ListGenres';
 import ListMovies from '../../components/ListMovies';
 import * as GenreActions from '../../store/ducks/genre/actions';
@@ -27,6 +28,7 @@ const Home: React.FC<Props> = ({setGenreRequest}) => {
 
   return (
     <Container>
+      <Header />
       <ListGenres setGenre={handleGenreSelected} />
       <ScrollView>
         <ListMovies />

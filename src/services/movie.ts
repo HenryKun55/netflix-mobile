@@ -1,5 +1,6 @@
 import api, {apiLocal} from './api';
 import Config from 'react-native-config';
+import {append} from '../config/append';
 
 export const discoverMovies = async (payload: any) => {
   const {genre, pageNumber} = payload;
@@ -39,6 +40,22 @@ export const getMovie = async (payload: any) => {
       headers: {Authorization: `Bearer ${token}`},
     });
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getCast = async (payload: any) => {
+  const {movieId} = payload;
+  try {
+    const {data} = await api.get(`movie/${movieId}`, {
+      params: {
+        api_key: Config.API_KEY_TMDB,
+        language: Config.LANG,
+        append_to_response: append.credits,
+      },
+    });
+    return data.credits.cast;
   } catch (error) {
     throw error;
   }

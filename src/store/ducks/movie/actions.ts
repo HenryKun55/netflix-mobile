@@ -28,3 +28,9 @@ export const setMovieSuccess = (data: IMovie) =>
   action(MovieTypes.SET_MOVIE_SUCCESS, data);
 
 export const clearMovies = () => action(MovieTypes.CLEAR_MOVIES);
+
+export const setPageRequest = (pageNumber: number) =>
+  action(MovieTypes.SET_PAGE_NUMBER_REQUEST, pageNumber);
+
+export const setPageSuccess = (pageNumber: number) =>
+  action(MovieTypes.SET_PAGE_NUMBER_SUCCESS, pageNumber);

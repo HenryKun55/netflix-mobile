@@ -27,14 +27,22 @@ const auth: Reducer<AuthState> = (state = INITIAL_STATE, action) => {
     case AuthTypes.STORE_REQUEST:
       return {...state, loading: true};
     case AuthTypes.TOKEN_SUCCESS:
-      const {id, token} = action.payload;
-      return {...state, data: {...state.data, token, _id: id}};
+      const {id, token, url, name} = action.payload;
+      return {...state, data: {...state.data, name, token, _id: id, url}};
     case AuthTypes.REMOVE_AUTH:
       return {...state, data: {}};
     case AuthTypes.CHANGE_STATE:
       return {...state, state: action.payload, loading: false};
     case AuthTypes.CANCEL_LOADING:
       return {...state, loading: false};
+    case AuthTypes.IMAGE_REQUEST:
+      return {...state, loading: true};
+    case AuthTypes.IMAGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: {...state.data, url: action.payload},
+      };
     default:
       return state;
   }

@@ -3,21 +3,36 @@ import SafeAreaView from 'react-native-safe-area-view';
 import {width} from '../../config';
 
 import {colors} from '../../styles';
+import {RFPercentage} from 'react-native-responsive-fontsize';
 
 export const Container = styled(SafeAreaView)`
   background-color: ${colors.background};
   flex: 1;
+  z-index: 0;
+`;
+
+export const ContainerMovie = styled.View``;
+
+export const Opacity = styled.View`
+  position: absolute;
+  top: 0;
+  background: rgba(0, 0, 0, 0.1);
+  height: ${RFPercentage(7)}px;
+  width: 100%;
+  z-index: 1;
 `;
 
 export const OverView = styled.ScrollView`
   padding: 0 20px;
+  margin-top: -${RFPercentage(5)}px;
   flex: 1;
 `;
 
 export const Title = styled.Text`
   padding: 10px 0;
+  margin: 0 20px;
   color: #fff;
-  width: ${Math.floor(width / 1.4)}px;
+  width: 100%;
   font-size: 25px;
   font-weight: bold;
 `;
@@ -49,6 +64,5 @@ export const ContainerCast = styled.View`
 
 export const ContainerHeader = styled.View`
   position: absolute;
-  right: 10px;
-  top: 20px;
+  right: ${RFPercentage(1)}px;
 `;

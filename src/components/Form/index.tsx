@@ -11,7 +11,17 @@ import {TextField} from 'react-native-material-textfield';
 import {ButtonContainer, ButtonText} from './styles';
 import { IUser } from '../../types/IUser';
 
-const validationSchema = Yup.object().shape({
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('E-mail não é válido')
+    .required('E-mail obrigatório')
+    .trim(),
+  password: Yup.string()
+    .min(6, 'Mínimo 6 dígitos ')
+    .required('Senha Obrigatória'),
+});
+
+const storeSchema = Yup.object().shape({
   name: Yup.string()
     .min(6, 'Mínimo 6 letras ')
     .required('Nome obrigatório')
@@ -63,10 +73,9 @@ const Form: React.FC<FormProps> = ({auth, store, state, loading, handleState}) =
     <Formik
       initialValues={{email: '', password: '', name: ''}}
       onSubmit={(values) => checkState() ? handleStore(values) : handleAuth(values)}
-      validationSchema={validationSchema}>
+      validationSchema={checkState() ? storeSchema : loginSchema}>
       {({handleChange, handleSubmit, handleBlur, values, errors, isValid}) => (
         <View pointerEvents={loading ? 'none' : 'auto'} style={{width: width * 0.7}}>
-          
           {checkState() && (
             <TextField
               ref={name}
@@ -124,11 +133,7 @@ const Form: React.FC<FormProps> = ({auth, store, state, loading, handleState}) =
           </TouchableOpacity>
           <TouchableOpacity onPress={() => checkState() ? handleState('signin') : handleState('signup')}>
             <ButtonContainer isValid={isValid} second >
-            {loading ? (
-                <Loading />
-              ) : (
-                <ButtonText>{checkState() ? 'Fazer Login' : 'Criar Conta'}</ButtonText>
-              )}
+              <ButtonText>{checkState() ? 'Fazer Login' : 'Criar Conta'}</ButtonText>
             </ButtonContainer>
           </TouchableOpacity>
         </View>
