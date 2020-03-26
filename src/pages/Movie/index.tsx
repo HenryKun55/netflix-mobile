@@ -17,6 +17,7 @@ import {
 } from './styles';
 import {useRoute} from '@react-navigation/native';
 import Item from '../../components/ListMovies/Item';
+import Loading from '../../components/Loading';
 import {IMovie} from '../../types/IMovie';
 import {sizes} from '../../config/sizes';
 import {width} from '../../config';
@@ -62,6 +63,7 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
     movies.map(m => {
       if (m.id === item.id) {
         item.users = m.users;
+        console.log(m.users)
         animateHeart();
       }
     });
@@ -88,7 +90,7 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
           item={item}
           uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
           width={width}
-          height={232}
+          height={RFPercentage(30)}
           backdrop
         />
         <LinearGradient colors={colors.gradientTitle} style={{ position: "relative", bottom: RFPercentage( item.title.length > 36 ? 9 : 6)}}>
@@ -127,7 +129,7 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
   );
 };
 
-const mapStateToProps = ({movie, auth}: ApplicationState) => ({
+const mapStateToProps = ({movie, auth, cast}: ApplicationState) => ({
   movies: movie.data,
   userId: auth.data._id,
 });

@@ -32,7 +32,7 @@ export const Title = styled.Text`
   padding: 10px 0;
   margin: 0 20px;
   color: #fff;
-  width: 100%;
+  width: 80%;
   font-size: 25px;
   font-weight: bold;
 `;
@@ -60,6 +60,8 @@ export const Desctiption = styled.Text`
 
 export const ContainerCast = styled.View`
   padding: 20px 0;
+  justify-content: flex-start;
+  align-items: flex-start;
 `;
 
 export const ContainerHeader = styled.View`

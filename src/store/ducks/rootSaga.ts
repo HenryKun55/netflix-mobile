@@ -26,7 +26,7 @@ import {
 //Cast
 import { CastTypes } from './cast/types';
 import {
-  setCast,
+  setCast, setActor,
 } from '../ducks/cast/sagas';
 
 
@@ -49,7 +49,8 @@ export default function* rootSaga() {
     takeLatest(AuthTypes.REMOVE_AUTH, removeUser),
     takeLatest(AuthTypes.IMAGE_REQUEST, imageStore),
     
-    //Auth
+    //Actor
     takeLeading(CastTypes.SET_CAST_REQUEST, setCast),
+    takeLeading(CastTypes.SET_PERSON_REQUEST, setActor),
   ]);
 }

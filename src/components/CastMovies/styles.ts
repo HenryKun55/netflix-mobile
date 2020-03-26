@@ -7,10 +7,7 @@ export const Container = styled(SafeAreaView)`
   flex: 1;
   background-color: ${colors.background};
   align-items: center;
-`;
-
-export const ContainerBanner = styled.View`
-  margin-top: ${RFPercentage(3)}px;
+  margin: ${RFPercentage(3)}px 0;
 `;
 
 export const ContainerMovie = styled.View`
@@ -21,12 +18,11 @@ export const CustomTitle = styled.Text``;
 
 export const TitleMovie = styled.Text`
   position: absolute;
-  bottom: ${RFPercentage(0.5)}px;
-  left: ${RFPercentage(2.7)}px;
-  width: ${RFPercentage(30.1)}px;
-  height: ${RFPercentage(12)}px;
-  padding: 20px;
+  bottom: 4px;
+  left: ${RFPercentage(0.71)}px;
+  width: ${RFPercentage(34.5)}px;
   text-align: center;
+  padding: 20px;
   color: #fff;
   font-size: ${RFPercentage(2.5)}px;
   border-bottom-left-radius: 25px;

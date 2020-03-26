@@ -9,6 +9,7 @@ import Home from '../pages/Home';
 import Movie from '../pages/Movie';
 import Login from '../pages/Login';
 import User from '../pages/User';
+import Actor from '../pages/Actor';
 
 const Auth = createStackNavigator();
 const App = createStackNavigator();
@@ -45,9 +46,6 @@ const AppStack: React.FC = () => (
         // headerShown: false,
         headerTransparent: true,
         title: '',
-        headerStyle: {
-          backgroundColor: 'red',
-        },
         headerTintColor: 'white',
         ...TransitionPresets.SlideFromRightIOS,
         gestureEnabled: true,
@@ -56,6 +54,17 @@ const AppStack: React.FC = () => (
     <App.Screen
       name="User"
       component={User}
+      options={{
+        headerTransparent: true,
+        title: '',
+        headerTintColor: 'white',
+        ...TransitionPresets.SlideFromRightIOS,
+        gestureEnabled: true,
+      }}
+    />
+    <App.Screen
+      name="Actor"
+      component={Actor}
       options={{
         headerTransparent: true,
         title: '',

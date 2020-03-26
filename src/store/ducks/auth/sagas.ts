@@ -74,7 +74,6 @@ export function* removeUser() {
 }
 
 export function* imageStore(payload: any) {
-  console.log(payload);
   try {
     const token = yield call(getStorage, '@token');
     const data = yield call(image, {file: payload.payload, token});

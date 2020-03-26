@@ -2,10 +2,11 @@
 import React, {useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import {Container, ContainerMovie, TitleMovie} from './styles';
+import {Container, ContainerBanner, ContainerMovie, TitleMovie} from './styles';
 import {FlatList, View} from 'react-native';
 import Loading from '../Loading';
 import {IMovie} from '../../types/IMovie';
+import { CastMovie } from '../../types/CastMovie';
 import {sizes} from '../../config/sizes';
 import Item from './Item';
 import Separator from './Separator';
@@ -20,6 +21,8 @@ interface StateProps {
   movies: IMovie[];
   selectedGenre: number;
   loading: boolean;
+  inCast?: boolean;
+  otherMovies?: CastMovie[];
 }
 
 interface DispatchProps {
@@ -33,9 +36,11 @@ const ListMovies: React.FC<Props> = ({
   pageNumber,
   selectedGenre,
   movies,
+  inCast,
   loading,
   setMoviesRequest,
   setPageRequest,
+  otherMovies,
 }) => {
   const ref = useRef<any>(null);
 
@@ -58,18 +63,19 @@ const ListMovies: React.FC<Props> = ({
     <Container>
       {movies.length > 0 ? (
         <>
+        {inCast ? null : (
           <ContainerMovie>
             <Item
               item={movies[0]}
-              uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
+              uriImage={Config.URI_IMAGE + sizes.poster_sizes.w342}
               width={RFPercentage(34.5)}
-              height={RFPercentage(52)}
-              borderRadius={30}
+              height={RFPercentage(45)}
+              borderRadius={RFPercentage(8)}
             />
             <TitleMovie>{movies[0].title}</TitleMovie>
           </ContainerMovie>
-
-          <View>
+        )}
+          <ContainerBanner>
             <FlatList
               ref={ref}
               initialNumToRender={5}
@@ -93,7 +99,7 @@ const ListMovies: React.FC<Props> = ({
               )}
               extraData={selectedGenre}
             />
-          </View>
+          </ContainerBanner>
         </>
       ) : (
         <Loading loading={loading} />

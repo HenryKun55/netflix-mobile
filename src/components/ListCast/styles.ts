@@ -1,22 +1,11 @@
 import styled from 'styled-components/native';
+import { colors } from '../../styles';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: #211102;
+  width: 100%;
+  height: ${RFPercentage(20)}px;
+  background-color: ${colors.background};
   align-items: center;
-`;
-
-export const ContainerMovie = styled.View`
-  margin-bottom: 30px;
-`;
-
-export const TitleMovie = styled.Text`
-  position: absolute;
-  bottom: 0;
-  width: 300px;
-  text-align: center;
-  padding: 20px;
-  color: #fff;
-  font-size: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
 `;

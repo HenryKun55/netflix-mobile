@@ -1,43 +1,74 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import FastImage from 'react-native-fast-image';
-import {Cast} from 'src/types/Cast';
-import {Container, Name} from './styles';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import {images} from '../../../assets';
+import {Container, ContainerTouchable, Name} from './styles';
+import FastImage from 'react-native-fast-image';
+import { useNavigation } from '@react-navigation/native';
 
-const Item = ({
-  item,
-  uriImage,
-  width = 100,
-  height = 100,
-  borderRadius = 0,
-}: {
+import * as CastActions from '../../../store/ducks/cast/actions';
+import { Cast } from '../../../types/Cast'
+import { RFPercentage } from 'react-native-responsive-fontsize';
+
+interface ItemCastProps {
   item: Cast;
   uriImage: string;
   width?: number | string;
   height?: number | string;
   borderRadius?: number;
-}) => {
+}
+
+interface DispatchProps {
+  setPersonRequest(personId: number): void;
+}
+
+type Props = ItemCastProps & DispatchProps;
+
+const Item: React.FC<Props> = ({ 
+  item,
+  uriImage,
+  width = RFPercentage(13),
+  height = RFPercentage(13),
+  borderRadius = 0,
+  setPersonRequest 
+})  => {
+
+  const navigate = useNavigation();
+
+  const handleActor = () => {
+    setPersonRequest(item.id);
+    navigate.navigate('Actor')
+    return true;
+  }
+
   return (
-    <Container>
-      <FastImage
-        key={item.id}
-        style={{
-          width,
-          height,
-          borderRadius,
-        }}
-        source={{
-          uri: item.profile_path
-            ? uriImage.concat(item.profile_path)
-            : images.noPhoto,
-          priority: FastImage.priority.low,
-        }}
-        resizeMode={FastImage.resizeMode.cover}
-      />
-      <Name>{item.name}</Name>
-    </Container>
+    <ContainerTouchable onPress={handleActor}>
+      <Container>
+        <FastImage
+          key={item.id}
+          style={{
+            width,
+            height,
+            borderRadius,
+          }}
+          source={{
+            uri: item.profile_path
+              ? uriImage.concat(item.profile_path)
+              : images.noPhoto,
+            priority: FastImage.priority.low,
+          }}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+        <Name>{item.name}</Name>
+      </Container>
+    </ContainerTouchable>
   );
 };
 
-export default Item;
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(CastActions, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Item);
