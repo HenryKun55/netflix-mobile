@@ -6,6 +6,8 @@ import {
   likeMovieSuccess,
   setPageSuccess,
   clearMovies,
+  setMovieSuccess,
+  ratingMovieSuccess
 } from './actions';
 
 import {getStorage} from '../../../util';
@@ -28,8 +30,9 @@ export function* getLikeMovie(payload: any) {
       token,
       movieId: payload.payload,
     });
-    const {movieId, users} = data;
-    yield put(likeMovieSuccess({movieId, users}));
+    const {movieId, users, ratings} = data;
+    yield put(likeMovieSuccess({users}));
+    yield put(ratingMovieSuccess({movieId, ratings}));
   } catch (error) {
     console.log('Filme não encontrado na base');
   }
@@ -39,8 +42,8 @@ export function* setLikeMovie(payload: any) {
   try {
     const token = yield call(getStorage, '@token');
     const data = yield call(likeMovie, {token, movieId: payload.payload});
-    const {movieId, users} = data;
-    yield put(likeMovieSuccess({movieId, users}));
+    const {users} = data;
+    yield put(likeMovieSuccess({users}));
   } catch (error) {
     console.log(error);
   }
@@ -55,4 +58,8 @@ export function* setPageNumber(payload: any) {
   } catch (error) {
     console.log(error);
   }
+}
+
+export function* setMovie(payload: any) {
+  yield put(setMovieSuccess(payload.payload))
 }

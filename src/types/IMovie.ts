@@ -1,3 +1,5 @@
+import {Rating} from './Rating';
+
 export interface IMovie {
   id: number;
   name: string;
@@ -11,4 +13,5 @@ export interface IMovie {
   title: string;
   vote_count: number;
   users?: string[];
+  ratings?: Rating[];
 }

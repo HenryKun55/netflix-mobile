@@ -14,17 +14,18 @@ import {
   CustomTitle,
   Desctiption,
   Opacity,
+  ButtonContainer,
 } from './styles';
-import {useRoute} from '@react-navigation/native';
+import {useRoute } from '@react-navigation/native';
 import Item from '../../components/ListMovies/Item';
-import Loading from '../../components/Loading';
+import UserRating from '../../components/UserRating';
 import {IMovie} from '../../types/IMovie';
 import {sizes} from '../../config/sizes';
 import {width} from '../../config';
 import ListCast from '../../components/ListCast';
 import LottieView from 'lottie-react-native';
 import {images} from '../../assets';
-import {TouchableOpacity, Animated} from 'react-native';
+import {TouchableOpacity, Animated, Text, TouchableHighlight} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {ApplicationState} from '../../store';
@@ -33,9 +34,12 @@ import { IUser } from '../../types/IUser';
 import { colors } from '../../styles';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 interface StateProps {
   movies: IMovie[];
-  userId: IUser;
+  userId: string;
+  selected: IMovie;
 }
 
 interface DispatchProps {
@@ -45,41 +49,40 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps;
 
-const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeRequest}) => {
-  const {item}: {item: IMovie} = useRoute().params;
-  const [progress] = useState(new Animated.Value(0));
-  const animation = useRef(null);
+const Movie: React.FC<Props> = ({movies, selected, userId, likeMovieRequest, getMovieLikeRequest}) => {
+  const [star] = useState(new Animated.Value(0));
+  const [heart] = useState(new Animated.Value(0));
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getMovieLikeRequest(item.id);
+    getMovieLikeRequest(selected.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    getMovieLike();
-  }, [movies])
-
-  const getMovieLike = () => {
-    movies.map(m => {
-      if (m.id === item.id) {
-        item.users = m.users;
-        console.log(m.users)
-        animateHeart();
-      }
-    });
-  };
+    console.log(selected.users);
+    animateHeart();
+  }, [selected.users])
 
   const animateHeart = async () => {
-    const like = item.users?.includes(userId);
-    progress.setValue(like ? 15 : 0);
-    Animated.timing(progress, {
+    const like = selected.users?.includes(userId);
+    heart.setValue(like ? 15 : 0);
+    Animated.timing(heart, {
       toValue: like ? 15 : 0,
       duration: 10000,
     }).start();
   };
+  
+  const animateStar = async () => {
+    // Animated.timing(star, {
+    //   toValue: 1,
+    //   duration: 1000,
+    // }).start();
+    setOpen(true);
+  };
 
   const handleHeart = () => {
-    likeMovieRequest(item.id);
+    likeMovieRequest(selected.id);
   };
 
   return (
@@ -87,51 +90,61 @@ const Movie: React.FC<Props> = ({movies, userId, likeMovieRequest, getMovieLikeR
       <Opacity />
       <ContainerMovie>
         <Item
-          item={item}
+          item={selected}
           uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
           width={width}
           height={RFPercentage(30)}
           backdrop
         />
-        <LinearGradient colors={colors.gradientTitle} style={{ position: "relative", bottom: RFPercentage( item.title.length > 36 ? 9 : 6)}}>
-          <Title>{item.title}</Title>
+        <LinearGradient colors={colors.gradientTitle} style={{ position: "relative", bottom: RFPercentage( selected.title.length > 36 ? 9 : 6)}}>
+          <Title>{selected.title}</Title>
         </LinearGradient>
       </ContainerMovie>
       <OverView>
         <ContainerHeader>
           <TouchableOpacity onPress={handleHeart}>
             <LottieView
-              ref={animation}
               style={{height: 50}}
               source={images.animation.heart}
-              progress={progress}
+              progress={heart}
             />
           </TouchableOpacity>
+          <TouchableHighlight style={{ position: 'absolute', right: 50, top: 2 }} onPress={animateStar}>
+            <LottieView
+              style={{ width: 45 }}
+              source={images.animation.star}
+              progress={star}
+            />
+          </TouchableHighlight>
         </ContainerHeader>
         <ContainerRating>
           <AirbnbRating
             count={5}
             selectedColor="#D95E5F"
             showRating={false}
-            defaultRating={Math.floor(item.vote_average / 2)}
+            defaultRating={Math.floor(selected.vote_average / 2)}
             size={10}
             isDisabled={true}
           />
         </ContainerRating>
         <CustomTitle>Resumo</CustomTitle>
-        <Desctiption>{item.overview}</Desctiption>
+        <Desctiption>{selected.overview}</Desctiption>
         <CustomTitle>Cast</CustomTitle>
         <ContainerCast>
-          <ListCast movieId={item.id} />
+          <ListCast movieId={selected.id} />
         </ContainerCast>
+        <CustomTitle>Avaliações</CustomTitle>
+
+        <UserRating open={open} handleOpen={setOpen}/>
       </OverView>
     </Container>
   );
 };
 
-const mapStateToProps = ({movie, auth, cast}: ApplicationState) => ({
+const mapStateToProps = ({movie, auth}: ApplicationState) => ({
   movies: movie.data,
   userId: auth.data._id,
+  selected: movie.selected,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

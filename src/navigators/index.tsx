@@ -12,6 +12,8 @@ import {AppStack, AuthStack} from './navigators';
 import {IUser} from '../types/IUser';
 import {colors} from '../styles';
 
+import 'react-native-gesture-handler';
+
 interface StateProps {
   user: IUser;
 }

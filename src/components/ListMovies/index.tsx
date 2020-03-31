@@ -13,7 +13,6 @@ import Separator from './Separator';
 import {ApplicationState} from '../../store';
 import Config from 'react-native-config';
 import * as MovieActions from '../../store/ducks/movie/actions';
-import {height} from '../../config';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 
 interface StateProps {
@@ -68,9 +67,8 @@ const ListMovies: React.FC<Props> = ({
             <Item
               item={movies[0]}
               uriImage={Config.URI_IMAGE + sizes.poster_sizes.w342}
-              width={RFPercentage(34.5)}
+              width={RFPercentage(40)}
               height={RFPercentage(45)}
-              borderRadius={RFPercentage(8)}
             />
             <TitleMovie>{movies[0].title}</TitleMovie>
           </ContainerMovie>
@@ -94,7 +92,6 @@ const ListMovies: React.FC<Props> = ({
                   width={RFPercentage(18)}
                   uriImage={Config.URI_IMAGE + sizes.poster_sizes.w185}
                   borderRadius={12}
-                  widthContainer={RFPercentage(18)}
                 />
               )}
               extraData={selectedGenre}

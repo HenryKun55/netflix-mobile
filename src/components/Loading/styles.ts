@@ -7,11 +7,10 @@ export const Container = styled.View`
   justify-content: center;
   align-items: center;
   ${({loading}: {loading?: boolean}) => css`
-    height: ${loading ? RFPercentage(100) : RFPercentage(80)}px;
+    height: ${loading ? RFPercentage(100) : RFPercentage(76)}px;
   `}
 `;
 
 export const LoadingComponent = styled.ActivityIndicator.attrs({
   size: 'small',
-  color: colors.white,
 })``;

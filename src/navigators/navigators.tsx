@@ -2,7 +2,6 @@ import React from 'react';
 import {
   createStackNavigator,
   TransitionPresets,
-  HeaderBackButton,
 } from '@react-navigation/stack';
 
 import Home from '../pages/Home';

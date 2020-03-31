@@ -51,7 +51,6 @@ const Actor: React.FC<Props> = ({person, loading}) => {
   const [progress] = useState(new Animated.Value(0));
   const animation = useRef(null);
 
-
   // useEffect(() => {
   //   getMovieLikeRequest(item.id);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,64 +85,68 @@ const Actor: React.FC<Props> = ({person, loading}) => {
   return (
     <Container>
       <Opacity />
-        <ContainerMovie>
-          <FastImage
-            style={{
-              width: RFPercentage(100),
-              height: RFPercentage(30),
-              opacity: 0.6
-            }}
-            source={{
-              uri: Config.URI_IMAGE + sizes.poster_sizes.w780 + person.profile_path,
-              priority: FastImage.priority.low,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-          <FastImage
-            style={{
-              position: 'relative',
-              bottom: RFPercentage(18),
-              left: RFPercentage(2),
-              width: RFPercentage(15),
-              height: RFPercentage(15),
-              borderRadius: RFPercentage(7.5),
-            }}
-            source={{
-              uri: Config.URI_IMAGE + sizes.poster_sizes.w500 + person.profile_path,
-              priority: FastImage.priority.low,
-            }}
-            resizeMode={FastImage.resizeMode.center}
-          />
-          <Title>{person.name}</Title>
-          <Title age>{`${calculateAge(new Date(person.birthday))} anos`}</Title>
-        </ContainerMovie>
-        <LinearGradient colors={colors.gradientTitle} style={{ height: RFPercentage(3.5), position: "relative", bottom: RFPercentage(26)}} />
-      <OverView>
-        <ContainerHeader>
-          {/* <TouchableOpacity onPress={handleHeart}>
-            <LottieView
-              ref={animation}
-              style={{height: 50}}
-              source={images.animation.heart}
-              progress={progress}
+      {person && (
+        <>
+          <ContainerMovie>
+            <FastImage
+              style={{
+                width: RFPercentage(100),
+                height: RFPercentage(30),
+                opacity: 0.6
+              }}
+              source={{
+                uri: Config.URI_IMAGE + sizes.poster_sizes.w780 + person.profile_path,
+                priority: FastImage.priority.low,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
             />
-          </TouchableOpacity> */}
-        </ContainerHeader>
-        <ContainerRating>
-          {/* <AirbnbRating
-            count={5}
-            selectedColor="#D95E5F"
-            showRating={false}
-            defaultRating={Math.floor(item.vote_average / 2)}
-            size={10}
-            isDisabled={true}
-          /> */}
-        </ContainerRating>
-        <CustomTitle>Biografia</CustomTitle>
-          <Desctiption>{person.biography || `Não possui`}</Desctiption>
-        <CustomTitle>Cast</CustomTitle>
-          <CastMovies />
-      </OverView>
+            <FastImage
+              style={{
+                position: 'relative',
+                bottom: RFPercentage(18),
+                left: RFPercentage(2),
+                width: RFPercentage(15),
+                height: RFPercentage(15),
+                borderRadius: RFPercentage(7.5),
+              }}
+              source={{
+                uri: Config.URI_IMAGE + sizes.poster_sizes.w500 + person.profile_path,
+                priority: FastImage.priority.low,
+              }}
+              resizeMode={FastImage.resizeMode.center}
+            />
+            <Title>{person.name}</Title>
+            <Title age>{`${calculateAge(new Date(person.birthday))} anos`}</Title>
+          </ContainerMovie>
+          <LinearGradient colors={colors.gradientTitle} style={{ height: RFPercentage(3.5), position: "relative", bottom: RFPercentage(26)}} />
+        <OverView>
+          <ContainerHeader>
+            {/* <TouchableOpacity onPress={handleHeart}>
+              <LottieView
+                ref={animation}
+                style={{height: 50}}
+                source={images.animation.heart}
+                progress={progress}
+              />
+            </TouchableOpacity> */}
+          </ContainerHeader>
+          <ContainerRating>
+            {/* <AirbnbRating
+              count={5}
+              selectedColor="#D95E5F"
+              showRating={false}
+              defaultRating={Math.floor(item.vote_average / 2)}
+              size={10}
+              isDisabled={true}
+            /> */}
+          </ContainerRating>
+          <CustomTitle>Biografia</CustomTitle>
+            <Desctiption>{person.biography || `Não possui`}</Desctiption>
+          <CustomTitle>Cast</CustomTitle>
+            <CastMovies />
+        </OverView>
+      </>
+      )}
     </Container>
   );
 };

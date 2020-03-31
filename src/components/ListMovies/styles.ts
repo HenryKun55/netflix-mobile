@@ -22,14 +22,11 @@ export const CustomTitle = styled.Text``;
 export const TitleMovie = styled.Text`
   position: absolute;
   bottom: ${RFPercentage(0.5)}px;
-  left: ${RFPercentage(2.7)}px;
-  width: ${RFPercentage(30.1)}px;
-  height: ${RFPercentage(12)}px;
+  width: ${RFPercentage(30)}px;
+  left: ${RFPercentage(5.4)}px;
   padding: 20px;
-  text-align: center;
   color: #fff;
+  text-align: center;
   font-size: ${RFPercentage(2.5)}px;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
   background-color: rgba(0, 0, 0, 0.7);
 `;

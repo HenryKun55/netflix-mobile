@@ -66,5 +66,6 @@ export const ContainerCast = styled.View`
 
 export const ContainerHeader = styled.View`
   position: absolute;
+  flex-direction: row;
   right: ${RFPercentage(1)}px;
 `;

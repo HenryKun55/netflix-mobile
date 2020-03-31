@@ -1,4 +1,5 @@
 import heart from './heart.json';
+import star from './star.json';
 
 const images = {
   noPhoto:
@@ -6,7 +7,8 @@ const images = {
   user:
     'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ7H2rI5F2Y7mwLWC8EcQ94YzSszoRx2wd2i0bqkbpGBwooD0r6',
   animation: {
-    heart: heart,
+    heart,
+    star
   },
 };
 
