@@ -36,7 +36,6 @@ const UserRating: React.FC<Props> = ({ selected, user, open, setRatingRequest, l
     const handleRate = async () => {
         if(!loading) {
             await setRatingRequest(selected.id, user, message, rating);
-            console.log('opa');
         }
     }
 
