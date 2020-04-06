@@ -2,7 +2,7 @@ import {call, put} from 'redux-saga/effects';
 import {getCast} from '../../../services/movie';
 import { getActor, getMoviesFromActor } from '../../../services/cast';
 import {
-  setCastSuccess, setPersonSuccess, setCastMovieSuccess
+  setCastSuccess, setPersonSuccess, setCastMovieSuccess, removeCastSuccess
 } from './actions';
 
 export function* setCast(payload: any) {
@@ -25,4 +25,8 @@ export function* setActor(payload: any) {
   } catch (error) {
     console.log(error);
   }
+}
+
+export function* removeCast() {
+  yield put(removeCastSuccess());
 }

@@ -37,7 +37,7 @@ const Item: React.FC<Props> = ({
 
   const handleActor = () => {
     setPersonRequest(item.id);
-    navigate.navigate('Actor')
+    navigate.push('Actor')
     return true;
   }
 

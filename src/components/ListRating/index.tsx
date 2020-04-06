@@ -1,61 +1,53 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {FlatList} from 'react-native';
-import Config from 'react-native-config';
-
-import {sizes} from '../../config/sizes';
 import Item from './Item';
 import Separator from './Separator';
 
 import {ApplicationState} from '../../store';
 import * as CastActions from '../../store/ducks/cast/actions';
-import { Cast } from '../../types/Cast';
 import Loading from '../Loading';
 
-import { Container } from './styles'
+import { Container, Comment } from './styles'
 import { RFPercentage } from 'react-native-responsive-fontsize';
+import { IMovie } from '../../types/IMovie';
 
-interface ListCastState {
-  movieId: number;
-  cast: Cast[] 
-  loading: boolean;
+interface ListRatingState {
+  movie: IMovie | undefined;
 }
 
 interface DispatchProps {
-  setCastRequest(movieId: number): void
+  // setRatingRequest(movieId: number): void
 }
 
-type Props = ListCastState & DispatchProps;
+type Props = ListRatingState & DispatchProps;
 
-const ListCast: React.FC<Props> = ({ movieId, loading, cast, setCastRequest }) => {
+const ListRating: React.FC<Props> = ({ movie }) => {
 
   const ref = useRef<any>(null);
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current!.scrollToOffset({animated: true, offset: 0});
-    }
-    setCastRequest(movieId);
-  }, [movieId])
-
+  const handleRatingUndefined = () => {
+    return movie?.ratings === undefined
+  }
+  
   return (
-    <Container>
-    {loading && cast.length == 0 ? <Loading /> : (
+    <Container loading={handleRatingUndefined()}>
+    {handleRatingUndefined() && (<Loading />)}
+    {!handleRatingUndefined() && movie?.ratings?.length === 0 && <Comment>Não possui comentários ainda :(</Comment>}
+    {movie?.ratings?.length > 0 && !handleRatingUndefined() && (
       <FlatList
         ref={ref}
         windowSize={5}
-        horizontal={true}
-        data={[1,2,3]}
-        keyExtractor={cast => String(cast)}
+        data={movie?.ratings}
+        keyExtractor={rating => String(rating._id)}
         onEndReachedThreshold={0.1}
         ItemSeparatorComponent={() => <Separator />}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
           <Item
-            item={item}
-            uriImage={Config.URI_IMAGE + sizes.poster_sizes.w185}
+            rating={item}
             borderRadius={RFPercentage(6.5)}
           />
         )}
@@ -66,9 +58,8 @@ const ListCast: React.FC<Props> = ({ movieId, loading, cast, setCastRequest }) =
   );
 };
 
-const mapStateToProps = ({cast}: ApplicationState) => ({
-  cast: cast.data,
-  loading: cast.loading,
+const mapStateToProps = ({movie}: ApplicationState) => ({
+  movie: movie.selectedMovies[movie.selectedMovies.length - 1],
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
@@ -77,4 +68,4 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ListCast);
+)(ListRating);

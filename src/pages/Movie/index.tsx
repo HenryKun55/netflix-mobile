@@ -1,4 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {AirbnbRating} from 'react-native-ratings';
@@ -8,61 +9,77 @@ import {
   ContainerMovie,
   ContainerHeader,
   ContainerRating,
-  ContainerCast,
+  ContainerLoading,
   OverView,
   Title,
   CustomTitle,
   Desctiption,
   Opacity,
-  ButtonContainer,
 } from './styles';
-import {useRoute } from '@react-navigation/native';
 import Item from '../../components/ListMovies/Item';
 import UserRating from '../../components/UserRating';
+import Loading from '../../components/Loading';
+import ListRating from '../../components/ListRating';
 import {IMovie} from '../../types/IMovie';
 import {sizes} from '../../config/sizes';
 import {width} from '../../config';
 import ListCast from '../../components/ListCast';
 import LottieView from 'lottie-react-native';
 import {images} from '../../assets';
-import {TouchableOpacity, Animated, Text, TouchableHighlight} from 'react-native';
+import {TouchableOpacity, Animated, Text, TouchableHighlight, BackHandler} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {ApplicationState} from '../../store';
 import * as MovieActions from '../../store/ducks/movie/actions';
-import { IUser } from '../../types/IUser';
 import { colors } from '../../styles';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface StateProps {
   movies: IMovie[];
   userId: string;
   selected: IMovie;
+  open: boolean;
 }
 
 interface DispatchProps {
   likeMovieRequest(movieId: number): void;
   getMovieLikeRequest(movieId: number): void;
+  removeMovieRequest(): void;
+  openModal(): void;
 }
 
 type Props = StateProps & DispatchProps;
 
-const Movie: React.FC<Props> = ({movies, selected, userId, likeMovieRequest, getMovieLikeRequest}) => {
+const Movie: React.FC<Props> = ({selected, userId, likeMovieRequest, getMovieLikeRequest, removeMovieRequest, open, openModal}) => {
   const [star] = useState(new Animated.Value(0));
   const [heart] = useState(new Animated.Value(0));
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getMovieLikeRequest(selected.id);
+    if(selected !== undefined) {
+      getMovieLikeRequest(selected.id);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    console.log(selected.users);
-    animateHeart();
-  }, [selected.users])
+    if(selected?.users?.length !== undefined) {
+      animateHeart();
+    }
+  }, [selected?.users])
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        removeMovieRequest();
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
+
 
   const animateHeart = async () => {
     const like = selected.users?.includes(userId);
@@ -78,7 +95,7 @@ const Movie: React.FC<Props> = ({movies, selected, userId, likeMovieRequest, get
     //   toValue: 1,
     //   duration: 1000,
     // }).start();
-    setOpen(true);
+    openModal();
   };
 
   const handleHeart = () => {
@@ -88,7 +105,14 @@ const Movie: React.FC<Props> = ({movies, selected, userId, likeMovieRequest, get
   return (
     <Container>
       <Opacity />
-      <ContainerMovie>
+      {!selected?.users && (
+        <ContainerLoading>
+          <Loading />
+        </ContainerLoading>
+      )}
+      {selected && (
+        <>
+        <ContainerMovie>
         <Item
           item={selected}
           uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
@@ -101,21 +125,25 @@ const Movie: React.FC<Props> = ({movies, selected, userId, likeMovieRequest, get
         </LinearGradient>
       </ContainerMovie>
       <OverView>
-        <ContainerHeader>
-          <TouchableOpacity onPress={handleHeart}>
-            <LottieView
-              style={{height: 50}}
-              source={images.animation.heart}
-              progress={heart}
-            />
-          </TouchableOpacity>
-          <TouchableHighlight style={{ position: 'absolute', right: 50, top: 2 }} onPress={animateStar}>
-            <LottieView
-              style={{ width: 45 }}
-              source={images.animation.star}
-              progress={star}
-            />
-          </TouchableHighlight>
+        <ContainerHeader >
+        {selected?.users && 
+          <>
+            <TouchableOpacity onPress={handleHeart}>
+              <LottieView
+                style={{height: 50}}
+                source={images.animation.heart}
+                progress={heart}
+              />
+            </TouchableOpacity>
+            <TouchableHighlight style={{ position: 'absolute', right: 50, top: 2 }} onPress={animateStar}>
+              <LottieView
+                style={{ width: 45 }}
+                source={images.animation.star}
+                progress={star}
+              />
+            </TouchableHighlight>
+          </>
+        }
         </ContainerHeader>
         <ContainerRating>
           <AirbnbRating
@@ -130,13 +158,13 @@ const Movie: React.FC<Props> = ({movies, selected, userId, likeMovieRequest, get
         <CustomTitle>Resumo</CustomTitle>
         <Desctiption>{selected.overview}</Desctiption>
         <CustomTitle>Cast</CustomTitle>
-        <ContainerCast>
-          <ListCast movieId={selected.id} />
-        </ContainerCast>
+        <ListCast movieId={selected.id} />
         <CustomTitle>Avaliações</CustomTitle>
-
-        <UserRating open={open} handleOpen={setOpen}/>
+        <ListRating />
+        <UserRating open={open} />
       </OverView>
+      </>
+      )}
     </Container>
   );
 };
@@ -144,7 +172,8 @@ const Movie: React.FC<Props> = ({movies, selected, userId, likeMovieRequest, get
 const mapStateToProps = ({movie, auth}: ApplicationState) => ({
   movies: movie.data,
   userId: auth.data._id,
-  selected: movie.selected,
+  selected: movie.selectedMovies[movie.selectedMovies.length - 1],
+  open: movie.modal,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

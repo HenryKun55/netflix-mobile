@@ -42,7 +42,7 @@ const Item: React.FC<Props> = ({
 
   const handleItem = () => {
     setMovieRequest(item);
-    navigate.navigate('Movie');
+    navigate.push('Movie');
   }
 
   return (

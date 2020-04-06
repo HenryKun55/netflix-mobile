@@ -1,5 +1,5 @@
 import {call, put} from 'redux-saga/effects';
-import {discoverMovies, likeMovie, getMovie} from '../../../services/movie';
+import {discoverMovies, likeMovie, getMovie, rateMovie} from '../../../services/movie';
 import {
   setMoviesRequest,
   setMoviesSuccess,
@@ -7,10 +7,17 @@ import {
   setPageSuccess,
   clearMovies,
   setMovieSuccess,
-  ratingMovieSuccess
+  ratingMovieSuccess,
+  removeMovieSuccess,
+  cancelLoading,
+  setRatinguccess,
+  closeModal,
 } from './actions';
 
 import {getStorage} from '../../../util';
+import { Rating } from '../../../types/Rating';
+
+import {showMessage} from 'react-native-flash-message';
 
 export function* setMovies(payload: any) {
   const {genre, pageNumber} = payload.payload;
@@ -30,11 +37,15 @@ export function* getLikeMovie(payload: any) {
       token,
       movieId: payload.payload,
     });
-    const {movieId, users, ratings} = data;
+    const {users, ratings} = data;
     yield put(likeMovieSuccess({users}));
-    yield put(ratingMovieSuccess({movieId, ratings}));
+    yield put(ratingMovieSuccess({ratings}));
   } catch (error) {
     console.log('Filme não encontrado na base');
+    const users: string[] = []
+    const ratings: Rating[] = []
+    yield put(likeMovieSuccess({users}));
+    yield put(ratingMovieSuccess({ratings}));
   }
 }
 
@@ -62,4 +73,32 @@ export function* setPageNumber(payload: any) {
 
 export function* setMovie(payload: any) {
   yield put(setMovieSuccess(payload.payload))
+}
+
+export function* removeMovie() {
+  yield put(removeMovieSuccess());
+}
+
+export function* setRating(payload: any) {
+  const { movieId, user, message, rating } = payload.payload;
+  const token = yield call(getStorage, '@token');
+  try {
+    const data = yield call(rateMovie, {
+      token,
+      movieId,
+      message,
+      rating
+    });
+    yield put(setRatinguccess(data));
+    yield put(closeModal());
+  } catch (err) {
+    showMessage({
+      message: '🙃 Eita!',
+      description: 'Tenta de novo, acho que agora vai ',
+      type: 'danger',
+      duration: 3000,
+    });
+    yield put(cancelLoading());
+  }
+  
 }

@@ -24,6 +24,7 @@ const CastMovies: React.FC<Props> = ({
   castMovies,
   loading,
 }) => {
+
   return (
     <Container>
       {!loading ? (
@@ -55,7 +56,7 @@ const CastMovies: React.FC<Props> = ({
 };
 
 const mapStateToProps = ({cast}: ApplicationState) => ({
-  castMovies: cast.selected?.movies,
+  castMovies: cast.selectedCast[cast.selectedCast.length - 1]?.movies,
   loading: cast.loading,
 });
 

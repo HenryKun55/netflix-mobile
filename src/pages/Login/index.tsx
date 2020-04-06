@@ -11,10 +11,12 @@ import {colors} from '../../styles';
 import Form from '../../components/Form';
 
 import {ApplicationState} from '../../store';
+import Loading from '../../components/Loading';
 
 interface LoginProps {
   state: string;
   loading: boolean;
+  loadInit: boolean;
 }
 
 interface DispatchProps {
@@ -31,6 +33,7 @@ const Login: React.FC<Props> = ({
   changeState,
   state,
   loading,
+  loadInit,
 }) => {
   const handleLogin = (data: IUser) => {
     authRequest(data);
@@ -53,6 +56,7 @@ const Login: React.FC<Props> = ({
         </Text>
       </ContainerTitle>
       <ContainerInputs>
+      {loadInit ? <Loading /> : (
         <Form
           auth={handleLogin}
           store={handleStore}
@@ -60,6 +64,7 @@ const Login: React.FC<Props> = ({
           loading={loading}
           handleState={handleState}
         />
+      )}
       </ContainerInputs>
     </Container>
   );
@@ -68,6 +73,7 @@ const Login: React.FC<Props> = ({
 const mapStateToProps = ({auth}: ApplicationState) => ({
   state: auth.state,
   loading: auth.loading,
+  loadInit: auth.loadInit,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

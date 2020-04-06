@@ -6,8 +6,9 @@ import {
   changeState,
   cancelLoading,
   imageSuccess,
+  loadInitCancel,
 } from './actions';
-import {login, store, image} from '../../../services/auth';
+import {login, store, image, checkToken} from '../../../services/auth';
 import {setStorage, getStorage, removeStorage} from '../../../util';
 import {showMessage} from 'react-native-flash-message';
 
@@ -52,6 +53,7 @@ export function* storeUser(payload: any) {
 export function* getUser() {
   try {
     const token = yield call(getStorage, '@token');
+    yield call(checkToken, token);
     const id = yield call(getStorage, '@_id');
     const name = yield call(getStorage, '@name');
     const url = yield call(getStorage, '@url');
@@ -59,12 +61,20 @@ export function* getUser() {
       yield put(tokenSuccess({token, id, url, name}));
     }
   } catch (err) {
-    console.log(err);
+    yield put(loadInitCancel());
+    // showMessage({
+    //   message: 'Sua internet ta funcionando? 🤔',
+    //   description: 'Verifique a conexão ai consagrado(a) !',
+    //   duration: 3000,
+    // });
   }
 }
 
 export function* removeUser() {
   yield call(removeStorage, '@token');
+  yield call(removeStorage, '@_id');
+  yield call(removeStorage, '@name');
+  yield call(removeStorage, '@url');  
   yield call(removeAuth);
   showMessage({
     message: '👋 Tchauzinho',

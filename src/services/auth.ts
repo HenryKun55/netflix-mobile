@@ -19,6 +19,19 @@ export const login = async (user: IUser) => {
   }
 };
 
+export const checkToken = async (payload: any) => {
+  try {
+    const response = await apiLocal.post('/token', null,
+    {
+      headers: {
+        Authorization: `Bearer ${payload}`,
+      }
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const image = async (payload: any) => {
   const {
     file: {uri, fileName, type},

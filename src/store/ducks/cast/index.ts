@@ -1,8 +1,10 @@
 import {Reducer} from 'redux';
+import update from 'react-addons-update';
 import {CastState, CastTypes} from './types';
 
 const INITIAL_STATE: CastState = {
   data: [],
+  selectedCast: [],
   loading: false,
   error: false,
 };
@@ -20,14 +22,14 @@ const cast: Reducer<CastState> = (state = INITIAL_STATE, action) => {
           data: action.payload,
           loading: false,
         };
-    case CastTypes.SET_ACTOR:
-      return {...state, selected: action.payload};
     case CastTypes.SET_PERSON_REQUEST:
       return {...state, loading: true};
     case CastTypes.SET_PERSON_SUCCESS:
-      return {...state, selected: action.payload};
+      return {...state, loading: false, selected: action.payload, selectedCast: [...state.selectedCast, action.payload]};
     case CastTypes.SET_CAST_MOVIE_SUCCESS:
-      return {...state, loading: false, selected: { ...state.selected, movies: action.payload }};
+      return update (state, { selectedCast: { [state.selectedCast.length - 1]: { movies: { $set: [...action.payload] } } }, loading: { $set: false } })
+      case CastTypes.REMOVE_CAST_SUCCESS:
+        return {...state, selectedCast: state.selectedCast.filter( (_,i) => i !== state.selectedCast.length - 1)};
     default:
       return state;
   }

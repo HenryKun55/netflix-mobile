@@ -41,7 +41,7 @@ const ListCast: React.FC<Props> = ({ movieId, loading, cast, setCastRequest }) =
   }, [movieId])
 
   return (
-    <Container>
+    <Container loading={loading}>
     {loading && cast.length == 0 ? <Loading /> : (
       <FlatList
         ref={ref}

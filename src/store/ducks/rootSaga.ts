@@ -22,12 +22,14 @@ import {
   getLikeMovie,
   setPageNumber,
   setMovie,
+  removeMovie,
+  setRating
 } from '../ducks/movie/sagas';
 
 //Cast
 import { CastTypes } from './cast/types';
 import {
-  setCast, setActor,
+  setCast, setActor, removeCast,
 } from '../ducks/cast/sagas';
 
 
@@ -43,6 +45,8 @@ export default function* rootSaga() {
     takeLeading(MovieTypes.GET_MOVIE_REQUEST, getLikeMovie),
     takeLeading(MovieTypes.SET_PAGE_NUMBER_REQUEST, setPageNumber),
     takeLeading(MovieTypes.SET_MOVIE_REQUEST, setMovie),
+    takeLeading(MovieTypes.REMOVE_MOVIE_REQUEST, removeMovie),
+    takeLeading(MovieTypes.SET_RATING_REQUEST, setRating),
     
     //Auth
     takeLatest(AuthTypes.AUTH_REQUEST, authUser),
@@ -54,5 +58,6 @@ export default function* rootSaga() {
     //Actor
     takeLeading(CastTypes.SET_CAST_REQUEST, setCast),
     takeLeading(CastTypes.SET_PERSON_REQUEST, setActor),
+    takeLeading(CastTypes.REMOVE_CAST_REQUEST, removeCast),
   ]);
 }

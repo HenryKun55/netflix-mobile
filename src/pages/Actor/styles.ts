@@ -29,10 +29,9 @@ export const OverView = styled.ScrollView`
 `;
 
 export const Title = styled.Text`
-  position: relative;
-  bottom: ${RFPercentage(30)}px;
+  bottom: ${RFPercentage(32.5)}px;
   left: ${RFPercentage(16)}px;
-  margin: 0 20px;
+  margin-left: 20px;
   color: #fff;
   font-weight: bold;
   ${({ age }: {age?: boolean}) => css`

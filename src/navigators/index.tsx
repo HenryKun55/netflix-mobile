@@ -13,6 +13,7 @@ import {IUser} from '../types/IUser';
 import {colors} from '../styles';
 
 import 'react-native-gesture-handler';
+import Loading from 'src/components/Loading';
 
 interface StateProps {
   user: IUser;

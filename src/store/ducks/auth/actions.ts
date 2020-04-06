@@ -26,6 +26,8 @@ export const tokenSuccess = ({
 
 export const getAuth = () => action(AuthTypes.GET_AUTH);
 
+export const loadInitCancel = () => action(AuthTypes.LOAD_INIT_CANCEL);
+
 export const removeAuth = () => action(AuthTypes.REMOVE_AUTH);
 
 export const changeState = (state: string) =>

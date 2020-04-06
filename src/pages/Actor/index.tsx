@@ -15,7 +15,7 @@ import {
   Desctiption,
   Opacity,
 } from './styles';
-import {useRoute} from '@react-navigation/native';
+import {useRoute, useFocusEffect} from '@react-navigation/native';
 import Loading from '../../components/Loading';
 import {IMovie} from '../../types/IMovie';
 import {sizes} from '../../config/sizes';
@@ -23,11 +23,12 @@ import {width} from '../../config';
 import ListCast from '../../components/ListCast';
 import LottieView from 'lottie-react-native';
 import {images} from '../../assets';
-import {TouchableOpacity, Animated, Text} from 'react-native';
+import {TouchableOpacity, Animated, Text, Dimensions, BackHandler} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {ApplicationState} from '../../store';
 import * as MovieActions from '../../store/ducks/movie/actions';
+import * as CastActions from '../../store/ducks/cast/actions';
 import { colors } from '../../styles';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 import { Person } from '../../types/Person';
@@ -40,17 +41,31 @@ interface StateProps {
   loading: boolean;
 }
 
-// interface DispatchProps {
-//   likeMovieRequest(movieId: number): void;
-//   getMovieLikeRequest(movieId: number): void;
-// }
+interface DispatchProps {
+  // likeMovieRequest(movieId: number): void;
+  // getMovieLikeRequest(movieId: number): void;
+  removeCastRequest(): void;
+}
 
-type Props = StateProps /* & DispatchProps */;
+type Props = StateProps & DispatchProps;
 
-const Actor: React.FC<Props> = ({person, loading}) => {
+const Actor: React.FC<Props> = ({person, loading, removeCastRequest}) => {
   const [progress] = useState(new Animated.Value(0));
   const animation = useRef(null);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        removeCastRequest();
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
+  
   // useEffect(() => {
   //   getMovieLikeRequest(item.id);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,7 +100,7 @@ const Actor: React.FC<Props> = ({person, loading}) => {
   return (
     <Container>
       <Opacity />
-      {person && (
+      {loading ? <Loading/> : (
         <>
           <ContainerMovie>
             <FastImage
@@ -95,7 +110,7 @@ const Actor: React.FC<Props> = ({person, loading}) => {
                 opacity: 0.6
               }}
               source={{
-                uri: Config.URI_IMAGE + sizes.poster_sizes.w780 + person.profile_path,
+                uri: Config.URI_IMAGE + sizes.poster_sizes.w780 + person?.profile_path,
                 priority: FastImage.priority.low,
               }}
               resizeMode={FastImage.resizeMode.cover}
@@ -110,17 +125,17 @@ const Actor: React.FC<Props> = ({person, loading}) => {
                 borderRadius: RFPercentage(7.5),
               }}
               source={{
-                uri: Config.URI_IMAGE + sizes.poster_sizes.w500 + person.profile_path,
+                uri: Config.URI_IMAGE + sizes.poster_sizes.w500 + person?.profile_path,
                 priority: FastImage.priority.low,
               }}
               resizeMode={FastImage.resizeMode.center}
             />
-            <Title>{person.name}</Title>
-            <Title age>{`${calculateAge(new Date(person.birthday))} anos`}</Title>
+            <LinearGradient colors={colors.gradientTitle} style={{ height: RFPercentage(3.5), bottom: RFPercentage(18.5)}} />
+            <Title>{person?.name}</Title>
+            <Title age>{`${calculateAge(new Date(person?.birthday || ''))} anos`}</Title>
           </ContainerMovie>
-          <LinearGradient colors={colors.gradientTitle} style={{ height: RFPercentage(3.5), position: "relative", bottom: RFPercentage(26)}} />
         <OverView>
-          <ContainerHeader>
+          {/* <ContainerHeader> */}
             {/* <TouchableOpacity onPress={handleHeart}>
               <LottieView
                 ref={animation}
@@ -129,8 +144,8 @@ const Actor: React.FC<Props> = ({person, loading}) => {
                 progress={progress}
               />
             </TouchableOpacity> */}
-          </ContainerHeader>
-          <ContainerRating>
+          {/* </ContainerHeader>
+          <ContainerRating> */}
             {/* <AirbnbRating
               count={5}
               selectedColor="#D95E5F"
@@ -139,9 +154,9 @@ const Actor: React.FC<Props> = ({person, loading}) => {
               size={10}
               isDisabled={true}
             /> */}
-          </ContainerRating>
+          {/* </ContainerRating> */}
           <CustomTitle>Biografia</CustomTitle>
-            <Desctiption>{person.biography || `Não possui`}</Desctiption>
+            <Desctiption>{person?.biography || `Não possui`}</Desctiption>
           <CustomTitle>Cast</CustomTitle>
             <CastMovies />
         </OverView>
@@ -152,12 +167,12 @@ const Actor: React.FC<Props> = ({person, loading}) => {
 };
 
 const mapStateToProps = ({cast}: ApplicationState) => ({
-  person: cast.selected,
+  person: cast.selectedCast[cast.selectedCast.length - 1],
   loading: cast.loading,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(MovieActions, dispatch);
+  bindActionCreators({...MovieActions, ...CastActions}, dispatch);
 
 export default connect(
   mapStateToProps,

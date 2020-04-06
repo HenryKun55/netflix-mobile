@@ -76,3 +76,19 @@ export const likeMovie = async (payload: any) => {
     throw error;
   }
 };
+
+export const rateMovie = async (payload: any) => {
+  const {movieId, message, rating, token} = payload;
+  try {
+    const {data} = await apiLocal.post(
+      'rating',
+      {movieId, message, rating},
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      },
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};

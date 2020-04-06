@@ -58,14 +58,14 @@ export const Desctiption = styled.Text`
   color: #fff;
 `;
 
-export const ContainerCast = styled.View`
-  padding: 20px 0;
-  justify-content: flex-start;
-  align-items: flex-start;
-`;
-
 export const ContainerHeader = styled.View`
   position: absolute;
   flex-direction: row;
   right: ${RFPercentage(1)}px;
+`;
+
+export const ContainerLoading = styled.View`
+  position: absolute;
+  right: ${RFPercentage(5)}px;
+  bottom: ${RFPercentage(29)}px;
 `;

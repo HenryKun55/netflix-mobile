@@ -10,6 +10,8 @@ import Login from '../pages/Login';
 import User from '../pages/User';
 import Actor from '../pages/Actor';
 
+import BackButton from '../components/BackButton';
+
 const Auth = createStackNavigator();
 const App = createStackNavigator();
 
@@ -48,6 +50,11 @@ const AppStack: React.FC = () => (
         headerTintColor: 'white',
         ...TransitionPresets.SlideFromRightIOS,
         gestureEnabled: true,
+        header: ({ navigation }) => {
+          return (
+            <BackButton isMovie onPress={navigation.goBack}/>
+          )
+        }
       }}
     />
     <App.Screen
@@ -70,6 +77,11 @@ const AppStack: React.FC = () => (
         headerTintColor: 'white',
         ...TransitionPresets.SlideFromRightIOS,
         gestureEnabled: true,
+        header: ({ navigation }) => {
+          return (
+            <BackButton onPress={navigation.goBack}/>
+          )
+        }
       }}
     />
   </App.Navigator>

@@ -10,9 +10,6 @@ export const setCastRequest = (movieId: number) =>
 export const setCastSuccess = (data: Cast[]) =>
   action(CastTypes.SET_CAST_SUCCESS, data);
 
-export const setActor = (personId: number) =>
-  action(CastTypes.SET_ACTOR, {personId});
-
 export const setPersonRequest = (personId: number) =>
   action(CastTypes.SET_PERSON_REQUEST, {personId});
 
@@ -21,3 +18,10 @@ export const setPersonSuccess = (person: Person) =>
 
 export const setCastMovieSuccess = (castMovies: CastMovie[]) =>
   action(CastTypes.SET_CAST_MOVIE_SUCCESS, castMovies);
+
+export const removeCastRequest = () =>
+  action(CastTypes.REMOVE_CAST_REQUEST);
+  
+export const removeCastSuccess = () =>
+  action(CastTypes.REMOVE_CAST_SUCCESS);
+  

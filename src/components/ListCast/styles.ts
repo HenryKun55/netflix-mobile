@@ -5,7 +5,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 export const Container = styled.View`
   flex: 1;
   width: 100%;
-  height: ${RFPercentage(20)}px;
+  height: ${({ loading }: { loading: boolean }) => loading ? `${RFPercentage(20)}px` : 'auto'};
   background-color: ${colors.background};
-  align-items: center;
+  margin: 20px 0;
 `;
