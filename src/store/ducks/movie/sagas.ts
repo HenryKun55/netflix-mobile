@@ -1,5 +1,5 @@
 import {call, put} from 'redux-saga/effects';
-import {discoverMovies, likeMovie, getMovie, rateMovie} from '../../../services/movie';
+import {discoverMovies, likeMovie, getMovie, rateMovie, getPopular} from '../../../services/movie';
 import {
   setMoviesRequest,
   setMoviesSuccess,
@@ -23,8 +23,14 @@ export function* setMovies(payload: any) {
   const {genre, pageNumber} = payload.payload;
   try {
     yield call(setMoviesRequest, genre, pageNumber);
+    console.log(genre);
+    if(genre === 999) {
+      const data = yield call(getPopular, {pageNumber});
+      yield put(setMoviesSuccess(data.results));
+      return; 
+    }
     const data = yield call(discoverMovies, {genre, pageNumber});
-    yield put(setMoviesSuccess(data.results));
+    yield put(setMoviesSuccess(data.results)); 
   } catch (error) {
     console.log(error);
   }
@@ -80,7 +86,7 @@ export function* removeMovie() {
 }
 
 export function* setRating(payload: any) {
-  const { movieId, user, message, rating } = payload.payload;
+  const { movieId, message, rating } = payload.payload;
   const token = yield call(getStorage, '@token');
   try {
     const data = yield call(rateMovie, {
@@ -101,4 +107,15 @@ export function* setRating(payload: any) {
     yield put(cancelLoading());
   }
   
+}
+
+export function* popularMovies(payload: any) {
+  const {pageNumber} = payload.payload;
+  try {
+    const data = yield call(getPopular, {pageNumber});
+    yield put(setMoviesSuccess(data.results));
+    return data;
+  } catch (error) {
+    return error;
+  }
 }

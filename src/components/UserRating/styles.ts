@@ -1,12 +1,12 @@
 import styled from 'styled-components/native';
-import {width} from '../../config';
 
 import {colors} from '../../styles';
-import {RFPercentage} from 'react-native-responsive-fontsize';
+
+export const Scroll = styled.ScrollView`
+`;
 
 export const Container = styled.View`
   flex-direction: row;
-  align-items: center;
 `;
 
 export const ContainerRating = styled.View`

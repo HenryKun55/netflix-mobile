@@ -22,7 +22,7 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps & GenreProps;
 
 const ListGenres: React.FC<Props> = ({setGenre, genreRequest, genres}) => {
-  const [selected, setSelected] = useState(28);
+  const [selected, setSelected] = useState(999);
 
   useEffect(() => {
     if (genres.length === 0) {

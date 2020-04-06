@@ -2,7 +2,7 @@ import {Reducer} from 'redux';
 import {GenreState, GenreTypes} from './types';
 
 const INITIAL_STATE: GenreState = {
-  selected: 28,
+  selected: 999,
   data: [],
   loading: false,
   error: false,

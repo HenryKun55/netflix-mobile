@@ -39,7 +39,6 @@ const ListMovies: React.FC<Props> = ({
   loading,
   setMoviesRequest,
   setPageRequest,
-  otherMovies,
 }) => {
   const ref = useRef<any>(null);
 

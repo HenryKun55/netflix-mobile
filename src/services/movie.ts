@@ -92,3 +92,20 @@ export const rateMovie = async (payload: any) => {
     throw error;
   }
 };
+
+export const getPopular = async (payload: any) => {
+  const { pageNumber } = payload;
+  try {
+    const {data} = await api.get('movie/popular', {
+      params: {
+        api_key: Config.API_KEY_TMDB,
+        language: Config.LANG,
+        page: pageNumber,
+      }
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
