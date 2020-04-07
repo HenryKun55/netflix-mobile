@@ -4,7 +4,8 @@ import {createStore, applyMiddleware, Store} from 'redux';
 import {AuthState} from '../store/ducks/auth/types';
 import {GenreState} from '../store/ducks/genre/types';
 import {MovieState} from '../store/ducks/movie/types';
-import { CastState } from './ducks/cast/types';
+import {CastState} from './ducks/cast/types';
+import {SearchState} from './ducks/search/types';
 
 import reducers from './ducks';
 import rootSaga from './ducks/rootSaga';
@@ -23,6 +24,7 @@ export interface ApplicationState {
   genre: GenreState;
   movie: MovieState;
   cast: CastState;
+  search: SearchState;
 }
 
 export default store;

@@ -14,4 +14,5 @@ export interface IMovie {
   vote_count: number;
   users?: string[];
   ratings?: Rating[];
+  genre_ids: number[];
 }

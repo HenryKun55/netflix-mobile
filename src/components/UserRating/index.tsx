@@ -13,7 +13,7 @@ import Loading from '../Loading';
 import * as MovieActions from '../../store/ducks/movie/actions';
 import { IMovie } from '../../types/IMovie';
 import { IUser } from '../../types/IUser';
-import { Keyboard } from 'react-native';
+import { Keyboard, ScrollView } from 'react-native';
 
 interface UserRatingProps {
     open: boolean;
@@ -34,38 +34,36 @@ const UserRating: React.FC<Props> = ({ selected, user, open, setRatingRequest, l
     const [message, setMessage] = useState('')
     const [rating, setRating] = useState(5)
 
-    const handleRate = async () => {
-        Keyboard.dismiss();
+    const handleRate = () => {
+        console.log('opa');
         if(!loading) {
-            await setRatingRequest(selected.id, user, message, rating);
+            setRatingRequest(selected.id, user, message, rating);
         }
     }
 
     return (
         <Modal isVisible={open} onBackdropPress={closeModal} onBackButtonPress={closeModal}>
-            <Scroll contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} keyboardShouldPersistTaps='handled'>
-                <ContainerRating >
-                    <AirbnbRating
-                        count={5}
-                        selectedColor="#D95E5F"
-                        showRating={false}
-                        defaultRating={rating}
-                        onFinishRating={setRating}
-                        size={10}
-                        starStyle={{ padding: 20 }}
-                        />
-                </ContainerRating>
-                <Container>
-                    <Input onChangeText={setMessage} />
-                    <ButtonContainer onPress={handleRate}  >
-                        {loading ? (
-                            <Loading />
+            <ContainerRating >
+                <AirbnbRating
+                    count={5}
+                    selectedColor="#D95E5F"
+                    showRating={false}
+                    defaultRating={rating}
+                    onFinishRating={setRating}
+                    size={10}
+                    starStyle={{ padding: 20 }}
+                    />
+            </ContainerRating>
+            <Container>
+                <Input onChangeText={setMessage} />
+                <ButtonContainer onPress={handleRate}  >
+                    {loading ? (
+                        <Loading />
                         ) : (
                             <Icon name="send" size={20} color="#FFF" />
-                        )}
-                    </ButtonContainer>
-                </Container>
-            </Scroll>
+                            )}
+                </ButtonContainer>
+            </Container>
         </Modal>
   );
 };

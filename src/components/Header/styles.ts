@@ -15,7 +15,7 @@ export const ContainerImage = styled.TouchableHighlight`
 `;
 
 export const ContainerTitle = styled.View`
-  flex: 5;
+  flex: 4;
 `;
 
 export const Title = styled.Text`

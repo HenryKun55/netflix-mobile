@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
 import {colors} from '../../styles';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const Scroll = styled.ScrollView`
 `;
@@ -21,7 +22,7 @@ export const Input = styled.TextInput`
     font-size: 16px;
 `;
 
-export const ButtonContainer = styled.TouchableOpacity`
+export const ButtonContainer = styled(TouchableOpacity as new () => TouchableOpacity)`
     padding: 10px;
     border-radius: 20px;
     margin-left: 10px;

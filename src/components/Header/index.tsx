@@ -26,6 +26,10 @@ const Header: React.FC<Props> = ({user, loading}) => {
     return true;
   };
 
+  const handleSearch = () => {
+    navigate.navigate('Search');
+  };
+
   return (
     <Container>
       <ContainerImage onPress={handleUser}>
@@ -50,7 +54,8 @@ const Header: React.FC<Props> = ({user, loading}) => {
         <Title>Olá</Title>
         <Title title>{user.name}</Title>
       </ContainerTitle>
-      <Icon name="search" size={30} color="#FFF" />
+      <Icon name="search" size={20} color="#FFF" onPress={handleSearch} style={{ flex: 0.4 }} />
+
     </Container>
   );
 };

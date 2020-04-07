@@ -9,6 +9,7 @@ import Movie from '../pages/Movie';
 import Login from '../pages/Login';
 import User from '../pages/User';
 import Actor from '../pages/Actor';
+import Search from '../pages/Search';
 
 import BackButton from '../components/BackButton';
 
@@ -82,6 +83,14 @@ const AppStack: React.FC = () => (
             <BackButton onPress={navigation.goBack}/>
           )
         }
+      }}
+    />
+    <App.Screen
+      name="Search"
+      component={Search}
+      options={{
+        headerShown: false,
+        ...TransitionPresets.ModalSlideFromBottomIOS
       }}
     />
   </App.Navigator>

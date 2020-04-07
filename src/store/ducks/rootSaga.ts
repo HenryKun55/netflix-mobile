@@ -32,6 +32,12 @@ import {
   setCast, setActor, removeCast,
 } from '../ducks/cast/sagas';
 
+//Search
+import { SearchTypes } from './search/types';
+import {
+  search, setSearchPageNumber
+} from '../ducks/search/sagas';
+
 
 export default function* rootSaga() {
   yield all([
@@ -59,5 +65,9 @@ export default function* rootSaga() {
     takeLeading(CastTypes.SET_CAST_REQUEST, setCast),
     takeLeading(CastTypes.SET_PERSON_REQUEST, setActor),
     takeLeading(CastTypes.REMOVE_CAST_REQUEST, removeCast),
+
+    //Search
+    takeLeading(SearchTypes.SEARCH_REQUEST, search),
+    takeLeading(SearchTypes.SET_PAGE_NUMBER_REQUEST, setSearchPageNumber),
   ]);
 }

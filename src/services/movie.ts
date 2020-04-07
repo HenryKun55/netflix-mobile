@@ -109,3 +109,21 @@ export const getPopular = async (payload: any) => {
   }
 };
 
+export const searchMovies = async (payload: any) => {
+  const { query, pageNumber } = payload;
+  try {
+    const {data} = await api.get('search/movie', {
+      params: {
+        api_key: Config.API_KEY_TMDB,
+        language: Config.LANG,
+        page: pageNumber,
+        query
+      }
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
