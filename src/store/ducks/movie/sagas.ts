@@ -1,5 +1,5 @@
 import {call, put} from 'redux-saga/effects';
-import {discoverMovies, likeMovie, getMovie, rateMovie, getPopular} from '../../../services/movie';
+import {discoverMovies, likeMovie, getMovie, rateMovie, getPopular, likeRate} from '../../../services/movie';
 import {
   setMoviesRequest,
   setMoviesSuccess,
@@ -12,6 +12,7 @@ import {
   cancelLoading,
   setRatinguccess,
   closeModal,
+  setLikeRatinguccess
 } from './actions';
 
 import {getStorage} from '../../../util';
@@ -23,7 +24,6 @@ export function* setMovies(payload: any) {
   const {genre, pageNumber} = payload.payload;
   try {
     yield call(setMoviesRequest, genre, pageNumber);
-    console.log(genre);
     if(genre === 999) {
       const data = yield call(getPopular, {pageNumber});
       yield put(setMoviesSuccess(data.results));
@@ -106,7 +106,25 @@ export function* setRating(payload: any) {
     });
     yield put(cancelLoading());
   }
-  
+}
+
+export function* setLikeRating(payload: any) {
+  const { idRating } = payload.payload;
+  const token = yield call(getStorage, '@token');
+  try {
+    const data = yield call(likeRate, {
+      token,
+      idRating
+    });
+    yield put(setLikeRatinguccess(data));
+  } catch (err) {
+    showMessage({
+      message: '🙃 Eita!',
+      description: 'Tenta de novo, acho que agora vai ',
+      type: 'danger',
+      duration: 3000,
+    });
+  }
 }
 
 export function* popularMovies(payload: any) {

@@ -10,6 +10,7 @@ import * as AuthActions from '../../store/ducks/auth/actions';
 import {Container, ContainerImage, ContainerTitle, Title} from './styles';
 import {IUser} from '../../types/IUser';
 import Loading from '../Loading';
+import { images } from '../../assets';
 
 interface StateProps {
   user: IUser;
@@ -43,7 +44,7 @@ const Header: React.FC<Props> = ({user, loading}) => {
               borderRadius: 25,
             }}
             source={{
-              uri: user.url,
+              uri: user.url || images.user,
               priority: FastImage.priority.low,
             }}
             resizeMode={FastImage.resizeMode.cover}

@@ -23,7 +23,8 @@ import {
   setPageNumber,
   setMovie,
   removeMovie,
-  setRating
+  setRating,
+  setLikeRating
 } from '../ducks/movie/sagas';
 
 //Cast
@@ -53,6 +54,7 @@ export default function* rootSaga() {
     takeLeading(MovieTypes.SET_MOVIE_REQUEST, setMovie),
     takeLeading(MovieTypes.REMOVE_MOVIE_REQUEST, removeMovie),
     takeLeading(MovieTypes.SET_RATING_REQUEST, setRating),
+    takeLeading(MovieTypes.SET_LIKE_RATING_REQUEST, setLikeRating),
     
     //Auth
     takeLatest(AuthTypes.AUTH_REQUEST, authUser),

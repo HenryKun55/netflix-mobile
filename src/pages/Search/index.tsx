@@ -44,7 +44,6 @@ const Search: React.FC<Props> = ({ data, searchRequest, setMovieRequest, genres,
     
     const [handleSearch] = useDebouncedCallback((value: string) => {
         if(value.length > 0) {
-            console.log(value);
             searchRequest(value);
         }
     }, 1000)

@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import {connect} from 'react-redux';
+import {connect, useSelector, useDispatch} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {ApplicationState} from '../../store';
 
-import {Container, ContainerRating, Input, ButtonContainer, Scroll} from './styles';
+import {Container, ContainerRating, Input, ButtonContainer} from './styles';
 import { AirbnbRating } from 'react-native-ratings';
 import Loading from '../Loading';
 
 import * as MovieActions from '../../store/ducks/movie/actions';
 import { IMovie } from '../../types/IMovie';
 import { IUser } from '../../types/IUser';
-import { Keyboard, ScrollView } from 'react-native';
 
 interface UserRatingProps {
     open: boolean;
@@ -35,7 +34,6 @@ const UserRating: React.FC<Props> = ({ selected, user, open, setRatingRequest, l
     const [rating, setRating] = useState(5)
 
     const handleRate = () => {
-        console.log('opa');
         if(!loading) {
             setRatingRequest(selected.id, user, message, rating);
         }
@@ -56,12 +54,12 @@ const UserRating: React.FC<Props> = ({ selected, user, open, setRatingRequest, l
             </ContainerRating>
             <Container>
                 <Input onChangeText={setMessage} />
-                <ButtonContainer onPress={handleRate}  >
+                <ButtonContainer>
                     {loading ? (
                         <Loading />
                         ) : (
-                            <Icon name="send" size={20} color="#FFF" />
-                            )}
+                        <Icon name="send" size={20} color="#FFF" onPress={handleRate} />
+                    )}
                 </ButtonContainer>
             </Container>
         </Modal>

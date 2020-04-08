@@ -5,4 +5,5 @@ export interface Rating {
     user: IUser,
     message: string,
     rating: number,
+    users: string[]
 }

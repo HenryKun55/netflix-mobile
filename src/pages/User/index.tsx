@@ -15,6 +15,7 @@ import {RFPercentage} from 'react-native-responsive-fontsize';
 
 import Button from '../../components/Button';
 import Loading from '../../components/Loading';
+import { images } from '../../assets';
 
 interface StateProps {
   user: IUser;
@@ -67,7 +68,7 @@ const User: React.FC<Props> = ({user, loading, imageRequest, removeAuth}) => {
               borderRadius: RFPercentage(10),
             }}
             source={{
-              uri: user.url,
+              uri: user.url || images.user,
               priority: FastImage.priority.low,
             }}
             resizeMode={FastImage.resizeMode.cover}

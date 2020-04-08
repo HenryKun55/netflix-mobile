@@ -1,7 +1,6 @@
 import {Reducer} from 'redux';
 import update from 'react-addons-update';
 import {MovieState, MovieTypes} from './types';
-import { IUser } from '../../../types/IUser';
 
 const INITIAL_STATE: MovieState = {
   pageNumber: 1,
@@ -46,8 +45,25 @@ const movie: Reducer<MovieState> = (state = INITIAL_STATE, action) => {
     case MovieTypes.SET_RATING_REQUEST:
       return {...state, loading: true};
     case MovieTypes.SET_RATING_SUCCESS:
-      console.log(action.payload)
       return update (state, { selectedMovies: { [state.selectedMovies.length - 1]: { ratings: { $push: [action.payload] } } }, loading: { $set: false } })
+    case MovieTypes.SET_LIKE_RATING_SUCCESS:
+      const indexRating = state.selectedMovies[state.selectedMovies.length - 1].ratings.findIndex(_r => _r._id === action.payload.rating._id);
+      return update (state, { 
+        selectedMovies: { 
+          [state.selectedMovies.length - 1]: { 
+            ratings: { 
+              [indexRating]: { 
+                users: { 
+                  $set: action.payload.rating.users
+                } 
+              } 
+            } 
+          } 
+        }, 
+        loading: {
+          $set: false 
+        } 
+      });
     case MovieTypes.CANCEL_LOADING:
       return {...state, loading: false};
     case MovieTypes.CLOSE_MODAL:

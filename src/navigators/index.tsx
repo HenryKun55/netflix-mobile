@@ -13,7 +13,6 @@ import {IUser} from '../types/IUser';
 import {colors} from '../styles';
 
 import 'react-native-gesture-handler';
-import Loading from 'src/components/Loading';
 
 interface StateProps {
   user: IUser;
@@ -31,7 +30,7 @@ const Navigator: React.FC<Props> = ({user, getAuth}) => {
   useEffect(() => {
     getAuth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user.token]);
 
   return (
     <SafeAreaProvider>

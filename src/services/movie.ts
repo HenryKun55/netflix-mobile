@@ -93,6 +93,22 @@ export const rateMovie = async (payload: any) => {
   }
 };
 
+export const likeRate = async (payload: any) => {
+  const {idRating, token} = payload;
+  try {
+    const {data} = await apiLocal.post(
+      `rating/${idRating}/like`,
+      null,
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      },
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPopular = async (payload: any) => {
   const { pageNumber } = payload;
   try {

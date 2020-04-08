@@ -54,6 +54,12 @@ export const setRatingRequest = (movieId: number, user: IUser, message: string, 
 export const setRatinguccess = (data: any) =>
   action(MovieTypes.SET_RATING_SUCCESS, data);
 
+export const setLikeRatingRequest = (idRating: string) =>
+  action(MovieTypes.SET_LIKE_RATING_REQUEST, { idRating });
+
+export const setLikeRatinguccess = (rating: Rating) =>
+  action(MovieTypes.SET_LIKE_RATING_SUCCESS, { rating });
+
 export const closeModal = () =>
   action(MovieTypes.CLOSE_MODAL);
 

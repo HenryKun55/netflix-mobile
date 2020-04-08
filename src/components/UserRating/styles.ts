@@ -29,4 +29,5 @@ export const ButtonContainer = styled(TouchableOpacity as new () => TouchableOpa
     background-color: ${colors.secondary};
     align-items: center;
     justify-content: center;
+    height: 40px;
 `

@@ -113,58 +113,58 @@ const Movie: React.FC<Props> = ({selected, userId, likeMovieRequest, getMovieLik
       {selected && (
         <>
         <ContainerMovie>
-        <Item
-          item={selected}
-          uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
-          width={width}
-          height={RFPercentage(30)}
-          backdrop
-        />
-        <LinearGradient colors={colors.gradientTitle} style={{ position: "relative", bottom: RFPercentage( selected.title.length > 36 ? 9 : 6)}}>
-          <Title>{selected.title}</Title>
-        </LinearGradient>
-      </ContainerMovie>
-      <OverView>
-        <ContainerHeader >
-        {selected?.users && 
-          <>
-            <TouchableOpacity onPress={handleHeart}>
-              <LottieView
-                style={{height: 50}}
-                source={images.animation.heart}
-                progress={heart}
-              />
-            </TouchableOpacity>
-            <TouchableHighlight style={{ position: 'absolute', right: 50, top: 2 }} onPress={animateStar}>
-              <LottieView
-                style={{ width: 45 }}
-                source={images.animation.star}
-                progress={star}
-              />
-            </TouchableHighlight>
-          </>
-        }
-        </ContainerHeader>
-        <ContainerRating>
-          <AirbnbRating
-            count={5}
-            selectedColor="#D95E5F"
-            showRating={false}
-            defaultRating={Math.floor(selected.vote_average / 2)}
-            size={10}
-            isDisabled={true}
+          <Item
+            item={selected}
+            uriImage={Config.URI_IMAGE + sizes.poster_sizes.w500}
+            width={width}
+            height={RFPercentage(30)}
+            backdrop
           />
-        </ContainerRating>
-        <CustomTitle>Resumo</CustomTitle>
-        <Desctiption>{selected.overview}</Desctiption>
-        <CustomTitle>Cast</CustomTitle>
-        <ListCast movieId={selected.id} />
-        <CustomTitle>Avaliações</CustomTitle>
-        <ListRating />
-        <UserRating open={open} />
-      </OverView>
+          <LinearGradient colors={colors.gradientTitle} style={{ position: "relative", bottom: RFPercentage( selected.title.length > 36 ? 9 : 6)}}>
+            <Title>{selected.title}</Title>
+          </LinearGradient>
+        </ContainerMovie>
+        <OverView>
+          <ContainerHeader >
+          {selected?.users && 
+            <>
+              <TouchableOpacity onPress={handleHeart}>
+                <LottieView
+                  style={{height: 50}}
+                  source={images.animation.heart}
+                  progress={heart}
+                />
+              </TouchableOpacity>
+              <TouchableHighlight style={{ position: 'absolute', right: 50, top: 2 }} onPress={animateStar}>
+                <LottieView
+                  style={{ width: 45 }}
+                  source={images.animation.star}
+                  progress={star}
+                />
+              </TouchableHighlight>
+            </>
+          }
+          </ContainerHeader>
+          <ContainerRating>
+            <AirbnbRating
+              count={5}
+              selectedColor="#D95E5F"
+              showRating={false}
+              defaultRating={Math.floor(selected.vote_average / 2)}
+              size={10}
+              isDisabled={true}
+            />
+          </ContainerRating>
+          <CustomTitle>Resumo</CustomTitle>
+          <Desctiption>{selected.overview}</Desctiption>
+          <CustomTitle>Cast</CustomTitle>
+          <ListCast movieId={selected.id} />
+          <CustomTitle>Avaliações</CustomTitle>
+          <ListRating />
+        </OverView>
       </>
       )}
+    <UserRating open={open} />
     </Container>
   );
 };
