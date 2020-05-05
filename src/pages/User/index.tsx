@@ -9,10 +9,11 @@ import {ApplicationState} from '../../store';
 import * as AuthActions from '../../store/ducks/auth/actions';
 import {IUser} from '../../types/IUser';
 
-import {Container, TouchableImage, Title} from './styles';
+import {Container, Header, TouchableImage, Title, Content, CustomTitle} from './styles';
 import FastImage from 'react-native-fast-image';
 import {RFPercentage} from 'react-native-responsive-fontsize';
 
+import ListFavorites from '../../components/ListFavorites';
 import Button from '../../components/Button';
 import Loading from '../../components/Loading';
 import { images } from '../../assets';
@@ -57,25 +58,31 @@ const User: React.FC<Props> = ({user, loading, imageRequest, removeAuth}) => {
 
   return (
     <Container>
-      <TouchableImage borderRadius={RFPercentage(10)} onPress={handleImage}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <FastImage
-            style={{
-              width: RFPercentage(20),
-              height: RFPercentage(20),
-              borderRadius: RFPercentage(10),
-            }}
-            source={{
-              uri: user.url || images.user,
-              priority: FastImage.priority.low,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-        )}
-      </TouchableImage>
-      <Title>{user.name}</Title>
+      <Header>
+        <TouchableImage borderRadius={RFPercentage(10)} onPress={handleImage}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <FastImage
+              style={{
+                width: RFPercentage(20),
+                height: RFPercentage(20),
+                borderRadius: RFPercentage(10),
+              }}
+              source={{
+                uri: user.url || images.user,
+                priority: FastImage.priority.low,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+          )}
+        </TouchableImage>
+        <Title>{user.name}</Title>
+      </Header>
+      <Content>
+        <CustomTitle>Favoritos</CustomTitle>
+        <ListFavorites />
+      </Content>
       <Button name="Sair" disabled={loading} onPress={handleExit} />
     </Container>
   );

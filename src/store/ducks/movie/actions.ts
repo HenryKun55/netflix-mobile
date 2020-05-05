@@ -68,3 +68,11 @@ export const openModal = () =>
 
 export const cancelLoading = () =>
   action(MovieTypes.CANCEL_LOADING);
+
+export const getFavoritesRequest = (pageNumber: number, clear?: boolean) =>
+  action(MovieTypes.GET_FAVORITES_REQUEST, { pageNumber, clear });
+
+export const getFavoritesSuccess = (favorites: IMovie[]) =>
+  action(MovieTypes.GET_FAVORITES_SUCCESS, { favorites });
+
+export const clearFavorites = () => action(MovieTypes.CLEAR_FAVORITES);

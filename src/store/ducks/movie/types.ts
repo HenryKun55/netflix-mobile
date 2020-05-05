@@ -6,7 +6,9 @@ import {IMovie} from '../../../types/IMovie';
 
 export interface MovieState {
   selectedMovies: IMovie[];
+  favorites: IMovie[];
   pageNumber: number;
+  pageNumberFavorites: number;
   modal: boolean;
   readonly data: IMovie[];
   readonly loading: boolean;
@@ -35,4 +37,7 @@ export enum MovieTypes {
   CANCEL_LOADING = 'movie/CANCEL_LOADING',
   CLOSE_MODAL = 'movie/CLOSE_MODAL',
   OPEN_MODAL = 'movie/OPEN_MODAL',
+  GET_FAVORITES_REQUEST = 'movie/GET_FAVORITES_REQUEST',
+  GET_FAVORITES_SUCCESS = 'movie/GET_FAVORITES_SUCCESS',
+  CLEAR_FAVORITES = 'movie/CLEAR_FAVORITES'
 }

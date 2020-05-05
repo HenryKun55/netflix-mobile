@@ -45,6 +45,20 @@ export const getMovie = async (payload: any) => {
   }
 };
 
+export const getFullMovie = async (payload: any) => {
+  const {movieId} = payload;
+  try {
+    const {data} = await api.get(`movie/${movieId}`, {
+      params: {
+        api_key: Config.API_KEY_TMDB,
+        language: Config.LANG,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
 export const getCast = async (payload: any) => {
   const {movieId} = payload;
   try {
@@ -142,4 +156,17 @@ export const searchMovies = async (payload: any) => {
   }
 };
 
-
+export const getFavorites = async (payload: any) => {
+  const { token, pageNumber } = payload;
+  try {
+    const {data} = await apiLocal.post('favorites', 
+    pageNumber,
+      {
+        headers: {Authorization: `Bearer ${token}`},
+      },
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};

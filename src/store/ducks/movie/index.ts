@@ -4,9 +4,11 @@ import {MovieState, MovieTypes} from './types';
 
 const INITIAL_STATE: MovieState = {
   pageNumber: 1,
+  pageNumberFavorites: 1,
   data: [],
   modal: false,
   selectedMovies: [],
+  favorites: [],
   loading: false,
   error: false,
 };
@@ -70,6 +72,12 @@ const movie: Reducer<MovieState> = (state = INITIAL_STATE, action) => {
       return {...state, modal: false};
     case MovieTypes.OPEN_MODAL:
       return {...state, modal: true};
+    case MovieTypes.GET_FAVORITES_REQUEST:
+      return {...state, laoding: true};
+    case MovieTypes.GET_FAVORITES_SUCCESS:
+      return {...state, loading: false, favorites: [...state.favorites, ...action.payload.favorites]};
+    case MovieTypes.CLEAR_FAVORITES:
+      return {...state, favorites: []};
     default:
       return state;
   }

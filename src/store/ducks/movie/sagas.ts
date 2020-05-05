@@ -1,5 +1,5 @@
-import {call, put} from 'redux-saga/effects';
-import {discoverMovies, likeMovie, getMovie, rateMovie, getPopular, likeRate} from '../../../services/movie';
+import {call, put, all} from 'redux-saga/effects';
+import {discoverMovies, likeMovie, getMovie, rateMovie, getPopular, likeRate, getFavorites, getFullMovie} from '../../../services/movie';
 import {
   setMoviesRequest,
   setMoviesSuccess,
@@ -12,7 +12,9 @@ import {
   cancelLoading,
   setRatinguccess,
   closeModal,
-  setLikeRatinguccess
+  setLikeRatinguccess,
+  clearFavorites,
+  getFavoritesSuccess
 } from './actions';
 
 import {getStorage} from '../../../util';
@@ -132,6 +134,20 @@ export function* popularMovies(payload: any) {
   try {
     const data = yield call(getPopular, {pageNumber});
     yield put(setMoviesSuccess(data.results));
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export function* favoritesMovies(payload: any) {
+  const {pageNumber, clear} = payload.payload;
+  if(clear) yield put(clearFavorites());
+  const token = yield call(getStorage, '@token');
+  try {
+    const data = yield call(getFavorites, {token, pageNumber});
+    const movies = yield all( data.map( (movie: any) => call(getFullMovie, { movieId: movie.movieId }) ) )
+    yield put(getFavoritesSuccess(movies));
     return data;
   } catch (error) {
     return error;

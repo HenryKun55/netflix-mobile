@@ -61,21 +61,25 @@ export function* getUser() {
       yield put(tokenSuccess({token, id, url, name}));
     }
   } catch (err) {
+    if(!err.response?.data) {
+      yield call(remove) 
+      showMessage({
+        message: 'Você foi desconectado',
+        description: 'Por motivos de segurança, faça login novamente',
+        duration: 3000,
+      });
+    }
     yield put(loadInitCancel());
-    // showMessage({
-    //   message: 'Sua internet ta funcionando? 🤔',
-    //   description: 'Verifique a conexão ai consagrado(a) !',
-    //   duration: 3000,
-    // });
+    showMessage({
+      message: 'Sua internet ta funcionando? 🤔',
+      description: 'Verifique a conexão ai consagrado(a) !',
+      duration: 3000,
+    });
   }
 }
 
 export function* removeUser() {
-  yield call(removeStorage, '@token');
-  yield call(removeStorage, '@_id');
-  yield call(removeStorage, '@name');
-  yield call(removeStorage, '@url');  
-  yield call(removeAuth);
+  yield call(remove) 
   showMessage({
     message: '👋 Tchauzinho',
     description: 'Volta depois por favor !',
@@ -102,4 +106,12 @@ export function* imageStore(payload: any) {
   } catch (err) {
     console.log(err);
   }
+}
+
+function* remove() {
+  yield call(removeStorage, '@token');
+  yield call(removeStorage, '@_id');
+  yield call(removeStorage, '@name');
+  yield call(removeStorage, '@url');  
+  yield call(removeAuth);
 }

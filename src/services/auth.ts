@@ -21,12 +21,13 @@ export const login = async (user: IUser) => {
 
 export const checkToken = async (payload: any) => {
   try {
-    const response = await apiLocal.post('/token', null,
+    const { data } = await apiLocal.post('/token', null,
     {
       headers: {
         Authorization: `Bearer ${payload}`,
       }
     });
+    return data;
   } catch (error) {
     throw error;
   }
